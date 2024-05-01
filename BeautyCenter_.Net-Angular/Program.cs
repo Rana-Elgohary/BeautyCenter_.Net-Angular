@@ -1,4 +1,7 @@
 
+using BeautyCenter_.Net_Angular.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace BeautyCenter_.Net_Angular
 {
     public class Program
@@ -13,6 +16,9 @@ namespace BeautyCenter_.Net_Angular
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<BeautyCenterContext>(
+                op => op.UseSqlServer(builder.Configuration.GetConnectionString("BeautyCenter")) );
 
             var app = builder.Build();
 
