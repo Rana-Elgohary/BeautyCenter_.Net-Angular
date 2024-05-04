@@ -8,6 +8,11 @@ namespace BeautyCenter_.Net_Angular
     {
         public static void Main(string[] args)
         {
+            //////// TO Open The Cors for the other domains:
+            /// 1)
+            string txt = "";
+
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -19,6 +24,16 @@ namespace BeautyCenter_.Net_Angular
 
             builder.Services.AddDbContext<BeautyCenterContext>(
                 op => op.UseSqlServer(builder.Configuration.GetConnectionString("BeautyCenter")) );
+
+            /// 2)
+            builder.Services.AddCors(option =>
+            {
+                option.AddPolicy(txt, builder => {
+                    builder.AllowAnyOrigin();
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyHeader();
+                });
+            });
 
             var app = builder.Build();
 
@@ -33,6 +48,8 @@ namespace BeautyCenter_.Net_Angular
 
             app.UseAuthorization();
 
+            /// 3)
+            app.UseCors(txt);
 
             app.MapControllers();
 
