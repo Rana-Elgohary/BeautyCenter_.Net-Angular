@@ -1,5 +1,6 @@
 
 using BeautyCenter_.Net_Angular.Models;
+using BeautyCenter_.Net_Angular.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 
 namespace BeautyCenter_.Net_Angular
@@ -23,7 +24,7 @@ namespace BeautyCenter_.Net_Angular
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddDbContext<BeautyCenterContext>(
-                op => op.UseSqlServer(builder.Configuration.GetConnectionString("BeautyCenter")) );
+                op => op.UseSqlServer(builder.Configuration.GetConnectionString("BeautyCenterCon")) );
 
             /// 2)
             builder.Services.AddCors(option =>
@@ -34,6 +35,9 @@ namespace BeautyCenter_.Net_Angular
                     builder.AllowAnyHeader();
                 });
             });
+
+            /// For generic repo:
+            builder.Services.AddScoped<UnitWork>();
 
             var app = builder.Build();
 
