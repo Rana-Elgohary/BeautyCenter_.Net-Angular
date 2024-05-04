@@ -3,7 +3,7 @@ using BeautyCenter_.Net_Angular.Repository;
 
 namespace BeautyCenter_.Net_Angular.UnitOfWork
 {
-    public class UnitOfWork
+    public class UnitWork
     {
         BeautyCenterContext db;
         GenericRepository<Package> packageRepository;
@@ -12,7 +12,7 @@ namespace BeautyCenter_.Net_Angular.UnitOfWork
         GenericRepository<Userr> userRepository;
         GenericRepository<UserService> userServiceRepository;
 
-        public UnitOfWork(BeautyCenterContext db)
+        public UnitWork(BeautyCenterContext db)
         {
             this.db = db;
         }
