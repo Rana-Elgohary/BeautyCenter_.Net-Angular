@@ -17,7 +17,7 @@ public partial class UserService
     [Key]
     public int ServiceId { get; set; }
 
-    public DateOnly? Date { get; set; }
+    public DateTime? Date { get; set; }
 
     [ForeignKey("ServiceId")]
     [InverseProperty("UserServices")]

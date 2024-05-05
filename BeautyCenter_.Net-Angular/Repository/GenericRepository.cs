@@ -23,6 +23,25 @@ namespace BeautyCenter_.Net_Angular.Repository
             return db.Set<type>().Find(id);
         }
 
+        public UserService SelectByCompositeKey(int userId, int serviceId)
+        {
+            return db.UserServices.Find(userId, serviceId);
+        }
+
+        public List<UserService> GetUserServicesByDate(DateTime? date)
+        {
+            if (!date.HasValue)
+            {
+                return new List<UserService>(); 
+            }
+            else
+            {
+                // Retrieve UserService records for the specified date
+                return db.Set<UserService>().Where(us => us.Date.HasValue && us.Date.Value.Date == date.Value.Date).ToList();
+            }
+        }
+
+
         public void add(type entity)
         {
             db.Set<type>().Add(entity);
