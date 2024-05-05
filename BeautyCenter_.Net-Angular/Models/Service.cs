@@ -26,9 +26,9 @@ public partial class Service
     public string Category { get; set; }
 
     [InverseProperty("Service")]
-    public virtual ICollection<UserService> UserServices { get; set; } = new List<UserService>();
+    public virtual ICollection<UserService> ?UserServices { get; set; } = new List<UserService>();
 
     [ForeignKey("ServiceId")]
     [InverseProperty("Services")]
-    public virtual ICollection<Package> Packages { get; set; } = new List<Package>();
+    public virtual ICollection<Package> ?Packages { get; set; } = new List<Package>();
 }
