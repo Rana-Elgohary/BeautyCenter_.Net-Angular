@@ -57,5 +57,61 @@ namespace BeautyCenter_.Net_Angular.Controllers
                 return Ok(userDTO);
             }
         }
+
+        [HttpPost]
+        public ActionResult AddUser(User userDTO)
+        {
+            if (userDTO == null)
+                return BadRequest();
+            else
+            {
+                Userr userr = new Userr();
+
+                userr.Id = userDTO.Id;
+                userr.Name = userDTO.Name;
+                userr.Email = userDTO.Email;
+                userr.Password = userDTO.Password;
+                userr.BankAccount = userDTO.BankAccount;
+
+                unit.UserRepository.add(userr);
+                unit.UserRepository.save();
+
+                return Ok(userDTO);
+            }
+        }
+
+        [HttpPut]
+        public ActionResult UpdateUser(User userDTO)
+        {
+            if (userDTO == null)
+                return BadRequest();
+            else
+            {
+                Userr userr = unit.UserRepository.selectbyid(userDTO.Id);
+                
+                userr.Name = userDTO.Name;
+                userr.Email = userDTO.Email;
+                userr.Password = userDTO.Password;
+                userr.BankAccount = userDTO.BankAccount;
+                
+                unit.UserRepository.update(userr);
+                unit.UserRepository.save();
+
+                return Ok(userDTO);
+            }
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteUser(int id)
+        {
+            if (id == null)
+                return NotFound();
+            Userr userr = unit.UserRepository.selectbyid(id);
+            if (userr == null)
+                return NotFound();
+            unit.UserRepository.delete(id);
+            unit.UserRepository.save();
+            return Ok("Successfully deleted");
+        }
     }
 }
