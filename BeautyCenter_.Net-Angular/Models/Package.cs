@@ -22,9 +22,9 @@ public partial class Package
     public decimal? Price { get; set; }
 
     [InverseProperty("Package")]
-    public virtual ICollection<PackageUser> PackageUsers { get; set; } = new List<PackageUser>();
+    public virtual ICollection<PackageUser> ?PackageUsers { get; set; } = new List<PackageUser>();
 
     [ForeignKey("PackageId")]
     [InverseProperty("Packages")]
-    public virtual ICollection<Service> Services { get; set; } = new List<Service>();
+    public virtual ICollection<Service> ?Services { get; set; } = new List<Service>();
 }
