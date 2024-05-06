@@ -1,4 +1,6 @@
 ﻿using BeautyCenter_.Net_Angular.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BeautyCenter_.Net_Angular.Repository
 {
@@ -17,12 +19,16 @@ namespace BeautyCenter_.Net_Angular.Repository
         {
             return db.Set<type>().ToList();
         }
+        public List<Package> selectallPackagesWithServices()
+        {
+            return db.Packages.Include(s=> s.Services).ToList();
+        }
 
         public type selectbyid(int id)
         {
             return db.Set<type>().Find(id);
         }
-
+      
         public UserService SelectByCompositeKey(int userId, int serviceId)
         {
             return db.UserServices.Find(userId, serviceId);
@@ -59,10 +65,14 @@ namespace BeautyCenter_.Net_Angular.Repository
             db.Set<type>().Remove(obj);
         }
 
+    
+
         public void save()
         {
             db.SaveChanges();
         }
 
+
+       
     }
 }
