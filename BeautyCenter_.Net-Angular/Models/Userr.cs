@@ -31,8 +31,8 @@ public partial class Userr
     public string BankAccount { get; set; }
 
     [InverseProperty("User")]
-    public virtual ICollection<PackageUser>? PackageUsers { get; set; } = new List<PackageUser>();
+    public virtual ICollection<PackageUser> PackageUsers { get; set; } = new List<PackageUser>();
 
     [InverseProperty("User")]
-    public virtual ICollection<UserService>? UserServices { get; set; } = new List<UserService>();
+    public virtual ICollection<UserService> UserServices { get; set; } = new List<UserService>();
 }

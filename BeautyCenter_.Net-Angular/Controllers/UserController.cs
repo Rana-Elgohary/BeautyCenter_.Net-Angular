@@ -113,5 +113,6 @@ namespace BeautyCenter_.Net_Angular.Controllers
             unit.UserRepository.save();
             return Ok("Successfully deleted");
         }
+
     }
 }
