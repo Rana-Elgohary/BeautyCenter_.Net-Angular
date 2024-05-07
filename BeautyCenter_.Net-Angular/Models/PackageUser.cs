@@ -18,7 +18,7 @@ public partial class PackageUser
     [Key]
     public int PackageId { get; set; }
 
-    public DateOnly? Date { get; set; }
+    public DateTime Date { get; set; }
 
     [ForeignKey("PackageId")]
     [InverseProperty("PackageUsers")]

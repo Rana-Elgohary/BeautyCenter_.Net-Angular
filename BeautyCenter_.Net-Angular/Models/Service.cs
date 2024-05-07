@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BeautyCenter_.Net_Angular.Models;
 
 [Table("Service")]
-public partial class Service
+public partial class ServiceResponse
 {
     [Key]
     public int Id { get; set; }

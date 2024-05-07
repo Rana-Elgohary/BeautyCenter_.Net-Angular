@@ -10,8 +10,10 @@ namespace BeautyCenter_.Net_Angular.Controllers
     public class PackageController : Controller
     {
         UnitWork unit;
+        BeautyCenterContext db;
 
-       
+
+
         public PackageController(UnitWork unit)
         {
             this.unit = unit;
@@ -20,7 +22,7 @@ namespace BeautyCenter_.Net_Angular.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            List<Package> packages = unit.PackageRepository.selectall();   
+            List<Package> packages = unit.PackageRepository.selectallPackagesWithServices();   
             List<PackageD> packagesDTO = new List<PackageD>();
 
             foreach(Package package in packages)

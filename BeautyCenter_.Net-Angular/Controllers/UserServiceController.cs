@@ -15,7 +15,40 @@ namespace BeautyCenter_.Net_Angular.Controllers
         {
             this.unit = unit;
         }
+        //Adding new UserService:
+        [HttpPost]
+        public ActionResult addUserService(Uservice newUserService)
+        {
+            ServiceResponse service = unit.ServiceRepository.selectbyid(newUserService.ServiceId);
+            Userr user = unit.UserRepository.selectbyid(newUserService.UserId);
 
+            if (service == null)
+            {
+                return BadRequest();
+            }
+
+            if (user == null)
+            {
+                return BadRequest();
+            }
+            if (newUserService == null)
+            {
+                return BadRequest();
+            }
+
+            else
+            {
+                UserService UserService = new UserService()
+                {
+                    ServiceId = newUserService.ServiceId,
+                    UserId = newUserService.UserId,
+                    Date = newUserService.Date
+                };
+                unit.UserServiceRepository.add(UserService);
+                unit.UserServiceRepository.save();
+                return Ok(newUserService);
+            }
+        }
         [HttpGet]
         public ActionResult GetAll()
         {
@@ -46,7 +79,9 @@ namespace BeautyCenter_.Net_Angular.Controllers
         {
             UserService usrS = unit.UserServiceRepository.SelectByCompositeKey(userId, serviceId);
             Userr usserr = unit.UserRepository.selectbyid(userId);
-            if (usserr == null)
+            var service = unit.ServiceRepository.selectbyid(serviceId);
+
+            if (usserr == null || service == null || usrS == null)
                 return NotFound();
             else
             {
@@ -56,80 +91,182 @@ namespace BeautyCenter_.Net_Angular.Controllers
                     ServiceId = usrS.ServiceId,
                     Date = usrS.Date,
                 };
-                //User userDTO = new User()
-                //{ 
-                //  Name= usserr.Name,
-                //  Email= usserr.Email,
-                //  Password = usserr.Password,
-                //  BankAccount = usserr.BankAccount
-                //};
+
                 var userobj = new
                 {
-                    usserr.Name
+                    Name = usserr.Name
                 };
 
-                //createDTO of the service to retrive only its name (SALMAAAAAAAAAAAAAAA)
+                var serviceObj = new
+                {
+                    Name = service.Name
+                };
 
-                var Object = new
+                var responseObject = new
                 {
                     User = userobj,
+                    Service = serviceObj,
                     UserService = userServiceDTO
-                    //don't forget to add service name when salma finish it(SALMAAAAAAAA)
                 };
 
-                // Return the response
-                return Ok(Object);
+                return Ok(responseObject);
             }
-        }
-
-        public class UserServiceResponse
-        {
-            public string UserName { get; set; }
-            public List<Uservice> UserServices { get; set; }
         }
 
         [HttpGet("userservices/{date}")]
         public ActionResult GetUserServicesByDate(DateTime date)
         {
-            // Retrieve UserService records for the specified date
-            var dateUService = unit.UserServiceRepository.GetUserServicesByDate(date);
+            // Query the UserService table to retrieve records for the specified date
+            var userServices = unit.UserServiceRepository.GetUserServicesByDate(date);
 
-            if (dateUService == null || !dateUService.Any())
+            // Check if any user services are found for the specified date
+            if (userServices == null || !userServices.Any())
                 return NotFound("No user services found for the specified date");
 
-            // Retrieve the user name (assuming all user services have the same user)
-            var userId = dateUService.FirstOrDefault()?.UserId;
-            var userName = userId != null ? unit.UserRepository.selectbyid(userId.Value)?.Name : null;
-
-            //var serviceName = unit.ServiceRepository.selectbyid(userService.ServiceId)?.Name;  SALMAAAA (m7taga ttzabat)
-
             // Construct a list to hold the result
-            var result = new List<Uservice>();
+            var result = new List<dynamic>();
 
             // Iterate through the retrieved user services to extract user and service names
-            foreach (var userService in dateUService)
+            foreach (var userService in userServices)
             {
-                var userServiceDTO = new Uservice
+                // Retrieve the user name from the User table using the UserId
+                var user = unit.UserRepository.selectbyid(userService.UserId);
+                var userName = user != null ? user.Name : "Unknown User";
+
+                // Retrieve the service name from the Service table using the ServiceId
+                var service = unit.ServiceRepository.selectbyid(userService.ServiceId);
+                var serviceName = service != null ? service.Name : "Unknown Service";
+
+                // Create a dynamic object with the retrieved information
+                var response = new
                 {
                     UserId = userService.UserId,
                     ServiceId = userService.ServiceId,
                     Date = userService.Date,
+                    UserName = userName,
+                    ServiceName = serviceName
                 };
 
-                result.Add(userServiceDTO);
+                // Add the dynamic object to the result list
+                result.Add(response);
             }
 
-            // DON'T FORGET TO ADD SALMAAAAA'S SERVICE=servicename
-            var response = new UserServiceResponse
-            {
-                UserName = userName,
-                UserServices = result
-            };
-
-            return Ok(response);
+            // Return the list of dynamic objects as the response
+            return Ok(result);
         }
 
 
+        [HttpGet("by-user/{userId}")]
+        public ActionResult GetUserServicesByUserId(int userId)
+        {
+            // Query the UserService table to retrieve records for the specified user ID
+            var userServices = unit.UserServiceRepository.getByUserIdfromUS(userId);
+
+            // Check if any user services are found for the specified user ID
+            if (userServices == null || !userServices.Any())
+                return NotFound("No user services found for the specified user ID");
+
+            // Construct a list to hold the result
+            var result = new List<dynamic>();
+
+            // Iterate through the retrieved user services to extract user and service names
+            foreach (var userService in userServices)
+            {
+                // Retrieve the user name from the User table using the UserId
+                var user = unit.UserRepository.selectbyid(userService.UserId);
+                var userName = user != null ? user.Name : "Unknown User";
+
+                // Retrieve the service name from the Service table using the ServiceId
+                var service = unit.ServiceRepository.selectbyid(userService.ServiceId);
+                var serviceName = service != null ? service.Name : "Unknown Service";
+
+                // Create a dynamic object with the retrieved information
+                var response = new
+                {
+                    UserId = userService.UserId,
+                    ServiceId = userService.ServiceId,
+                    Date = userService.Date,
+                    UserName = userName,
+                    ServiceName = serviceName
+                };
+
+                // Add the dynamic object to the result list
+                result.Add(response);
+            }
+
+            // Return the list of dynamic objects as the response
+            return Ok(result);
+        }
+
+
+        
+        [HttpPut("{userId}/{serviceId}")]
+        public IActionResult UpdateUserService(int userId, int serviceId, [FromBody] Uservice userServiceDTO)
+        {
+            if (userServiceDTO == null || userId!=userServiceDTO.UserId || serviceId!=userServiceDTO.ServiceId)
+            {
+                return BadRequest("Invalid user service data");
+            }
+
+            var existingUserService = unit.UserServiceRepository.SelectByCompositeKey(userId, serviceId);
+            if (existingUserService == null)
+            {
+                return NotFound("User service not found");
+            }
+
+            // Update the entire entity with the new data
+            existingUserService.UserId = userServiceDTO.UserId;
+            existingUserService.ServiceId = userServiceDTO.ServiceId;
+            existingUserService.Date = userServiceDTO.Date;
+
+            // Save changes to the database
+            unit.UserServiceRepository.update(existingUserService);
+            unit.UserServiceRepository.save();
+
+            return Ok("User service updated successfully");
+        }
+
+
+
+
+
+        //--------------------------------------------------------------
+
+        //Delete by Composite key:
+
+        [HttpDelete("{userId:int}/{ServiceId:int}")]
+        public ActionResult deleteUserServiceByID(int userId, int ServiceId)
+        {
+            UserService UserService = unit.UserServiceRepository.getByCompositeKeyUS(userId, ServiceId);
+            if (UserService == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                unit.UserServiceRepository.deleteByCompositeKeyG(userId, ServiceId);
+                unit.UserServiceRepository.save();
+                return Ok("Deleted Successfully");
+            }
+        }
+        //-----------------------------------------------------------
+
+        //Delete UserService by Date:
+        [HttpDelete("{Date}")]
+        public ActionResult deleteUserPackageByDate(DateTime Date)
+        {
+            List<UserService> UserServices = unit.UserServiceRepository.GetUserServicesByDate(Date);
+            if (UserServices == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                unit.UserServiceRepository.deleteUserServiceByDate(Date);
+                unit.UserServiceRepository.save();
+                return Ok("UserService Deleted succ");
+            }
+        }
     }
 }
 
