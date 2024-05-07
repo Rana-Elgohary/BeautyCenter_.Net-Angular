@@ -1,4 +1,5 @@
-﻿using BeautyCenter_.Net_Angular.DTO;
+﻿using AutoMapper;
+using BeautyCenter_.Net_Angular.DTO;
 using BeautyCenter_.Net_Angular.Models;
 using BeautyCenter_.Net_Angular.UnitOfWork;
 using Microsoft.AspNetCore.Http;
@@ -11,10 +12,12 @@ namespace BeautyCenter_.Net_Angular.Controllers
     public class UserController : ControllerBase
     {
         UnitWork unit;
+        private readonly IMapper mapper;
 
-        public UserController(UnitWork unit)
+        public UserController(UnitWork unit, IMapper mapper)
         {
             this.unit = unit;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -46,14 +49,15 @@ namespace BeautyCenter_.Net_Angular.Controllers
                 return NotFound();
             else
             {
-                User userDTO = new User()
-                {
-                    Id = usserr.Id,
-                    Name = usserr.Name,
-                    Email = usserr.Email,
-                    Password = usserr.Password,
-                    BankAccount = usserr.BankAccount
-                };
+                //User userDTO = new User()
+                //{
+                //    Id = usserr.Id,
+                //    Name = usserr.Name,
+                //    Email = usserr.Email,
+                //    Password = usserr.Password,
+                //    BankAccount = usserr.BankAccount
+                //};
+                User userDTO = mapper.Map<User>(usserr);
                 return Ok(userDTO);
             }
         }

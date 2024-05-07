@@ -1,4 +1,5 @@
 
+using BeautyCenter_.Net_Angular.Config;
 using BeautyCenter_.Net_Angular.Models;
 using BeautyCenter_.Net_Angular.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +40,8 @@ namespace BeautyCenter_.Net_Angular
             /// For generic repo:
             builder.Services.AddScoped<UnitWork>();
 
+            /// For Auto Mapper:
+            builder.Services.AddAutoMapper(typeof(AutoMapConfig).Assembly);
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
