@@ -26,5 +26,5 @@ public partial class Package
 
     [ForeignKey("PackageId")]
     [InverseProperty("Packages")]
-    public virtual ICollection<Service> ?Services { get; set; } = new List<Service>();
+    public virtual ICollection<ServiceResponse> ?Services { get; set; } = new List<ServiceResponse>();
 }

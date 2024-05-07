@@ -21,7 +21,7 @@ public partial class BeautyCenterContext : DbContext
 
     public virtual DbSet<PackageUser> PackageUsers { get; set; }
 
-    public virtual DbSet<Service> Services { get; set; }
+    public virtual DbSet<ServiceResponse> Services { get; set; }
 
     public virtual DbSet<UserService> UserServices { get; set; }
 
@@ -49,7 +49,7 @@ public partial class BeautyCenterContext : DbContext
                 .HasConstraintName("FK__PackageUs__UserI__4CA06362");
         });
 
-        modelBuilder.Entity<Service>(entity =>
+        modelBuilder.Entity<ServiceResponse>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__service__3214EC07AC3A8DFE");
 
@@ -62,7 +62,7 @@ public partial class BeautyCenterContext : DbContext
                         .HasForeignKey("PackageId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK__PackageSe__Packa__49C3F6B7"),
-                    l => l.HasOne<Service>().WithMany()
+                    l => l.HasOne<ServiceResponse>().WithMany()
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK__PackageSe__Servi__48CFD27E"),

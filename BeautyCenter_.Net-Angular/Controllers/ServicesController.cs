@@ -28,9 +28,9 @@ namespace BeautyCenter_.Net_Angular.Controllers
         [HttpGet]
         public IActionResult GetAllServices()
         {
-            List<Service> ServiseList = unit.ServiceRepository.selectall();
+            List<ServiceResponse> ServiseList = unit.ServiceRepository.selectall();
             List<serviceD> ServiseListDTO = new List<serviceD>();
-            foreach (Service serv in ServiseList)
+            foreach (ServiceResponse serv in ServiseList)
             {
                 serviceD servD = new serviceD()
                 {
@@ -60,7 +60,7 @@ namespace BeautyCenter_.Net_Angular.Controllers
                 return BadRequest();
             }
 
-            Service service = unit.ServiceRepository.selectbyid(id);
+            ServiceResponse service = unit.ServiceRepository.selectbyid(id);
             if (service == null)
             {
                 return NotFound();
@@ -114,9 +114,9 @@ namespace BeautyCenter_.Net_Angular.Controllers
             }
             else
             {
-                List<Service> ListOfServices = unit.ServiceRepository.GetServicesByCategory(categ);
+                List<ServiceResponse> ListOfServices = unit.ServiceRepository.GetServicesByCategory(categ);
                 List<serviceD> ListOfServicesDTO = new List<serviceD>();
-                foreach (Service service in ListOfServices)
+                foreach (ServiceResponse service in ListOfServices)
                 {
                     serviceD servD = new serviceD()
                     {
@@ -141,7 +141,7 @@ namespace BeautyCenter_.Net_Angular.Controllers
             }
             else
             {
-                Service NewService = new Service()
+                ServiceResponse NewService = new ServiceResponse()
                 {
                     Id = service.Id,
                     Name= service.Name,
@@ -163,7 +163,7 @@ namespace BeautyCenter_.Net_Angular.Controllers
             {
                 return BadRequest();
             }
-            Service serv = unit.ServiceRepository.selectbyid(service.Id);
+            ServiceResponse serv = unit.ServiceRepository.selectbyid(service.Id);
             if (service == null)
             {
                 return NotFound();
@@ -187,7 +187,7 @@ namespace BeautyCenter_.Net_Angular.Controllers
             {
                 return BadRequest();
             }
-            Service ser=unit.ServiceRepository.selectbyid(id);
+            ServiceResponse ser=unit.ServiceRepository.selectbyid(id);
             if(ser ==null)
             {
                 return NotFound();

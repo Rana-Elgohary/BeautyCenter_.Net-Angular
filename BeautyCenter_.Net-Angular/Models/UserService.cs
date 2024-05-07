@@ -21,7 +21,7 @@ public partial class UserService
 
     [ForeignKey("ServiceId")]
     [InverseProperty("UserServices")]
-    public virtual Service Service { get; set; }
+    public virtual ServiceResponse Service { get; set; }
 
     [ForeignKey("UserId")]
     [InverseProperty("UserServices")]

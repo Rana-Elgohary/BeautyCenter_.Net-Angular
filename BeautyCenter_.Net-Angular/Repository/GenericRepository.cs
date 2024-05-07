@@ -77,6 +77,15 @@ namespace BeautyCenter_.Net_Angular.Repository
 
         }
 
+
+        public UserService getByCompositeKeyUS(int ServiceId, int userId)
+        {
+            return db.Set<UserService>()
+            .Include(us => us.Service) // Include the Service navigation property
+            .Include(us => us.User)    // Include the User navigation property
+            .FirstOrDefault(us => us.ServiceId == ServiceId && us.UserId == userId);
+
+        }
         public void deleteByCompositeKeyG(int forignId1, int forignId2)
         {
             type obj = db.Set<type>().Find(forignId1, forignId2);
@@ -85,10 +94,18 @@ namespace BeautyCenter_.Net_Angular.Repository
         public List<PackageUser> getByUserIdfromPU(int userId)
         {
             return db.PackageUsers.Where(t => t.User.Id == userId)
-            .Include(pu => pu.Package) 
+            .Include(pu => pu.Package)
             .Include(pu => pu.User)
             .ToList();
         }
+        public List<UserService> getByUserIdfromUS(int userId)
+        {
+            return db.UserServices.Where(t => t.User.Id == userId)
+            .Include(us =>us.Service )
+            .Include(us => us.User)
+            .ToList();
+        }
+
 
         public List<PackageUser> getByPackageIdfromPU(int packageId)
         {
@@ -111,12 +128,24 @@ namespace BeautyCenter_.Net_Angular.Repository
         public void deletePackageUserByDate(DateTime date)
         {
 
-           List<PackageUser> packagesUsers= db.Set<PackageUser>()
-           .Where(PU => PU.Date == date)
-           .ToList();
-            foreach(PackageUser packageUser in packagesUsers)
+            List<PackageUser> packagesUsers = db.Set<PackageUser>()
+            .Where(PU => PU.Date == date)
+            .ToList();
+            foreach (PackageUser packageUser in packagesUsers)
             {
                 db.Set<PackageUser>().Remove(packageUser);
+            }
+        }
+
+        public void deleteUserServiceByDate(DateTime date)
+        {
+
+            List<UserService> UserServices = db.Set<UserService>()
+            .Where(US => US.Date == date)
+            .ToList();
+            foreach (UserService UserService in UserServices)
+            {
+                db.Set<UserService>().Remove(UserService);
             }
         }
         //-----------------------------------------------
@@ -140,17 +169,17 @@ namespace BeautyCenter_.Net_Angular.Repository
             db.Set<type>().Remove(obj);
         }
         //here getting service by category
-        public List<Service> GetServicesByCategory(string Categ)
+        public List<ServiceResponse> GetServicesByCategory(string Categ)
         {
 
-            List<Service> ls =db.Services.Where(s => s.Category == Categ).ToList();
+            List<ServiceResponse> ls =db.Services.Where(s => s.Category == Categ).ToList();
             return ls;
         }
 
-        public List<Service> GetServicesByName(string Name)
+        public List<ServiceResponse> GetServicesByName(string Name)
         {
 
-            List<Service> ls = db.Services.Where(s => s.Name == Name).ToList();
+            List<ServiceResponse> ls = db.Services.Where(s => s.Name == Name).ToList();
             return ls;
         }
 
