@@ -32,6 +32,10 @@ namespace BeautyCenter_.Net_Angular.Repository
         {
             return db.Packages.Include(s=> s.Services).ToList();
         }
+        public Package selectallPackagesWithServicesID(int id)
+        {
+            return db.Packages.Include(s => s.Services).First(s => s.Id == id);
+        }
 
         public type selectbyid(int id)
         {
