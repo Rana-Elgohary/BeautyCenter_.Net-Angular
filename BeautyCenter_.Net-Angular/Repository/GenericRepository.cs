@@ -189,7 +189,10 @@ namespace BeautyCenter_.Net_Angular.Repository
         }
 
 
-    
+        public Userr getUserr(string username , string pass)
+        {
+            return  db.Set<Userr>().First(s=>s.Name==username && s.Password==pass);
+        }
 
         public void save()
         {

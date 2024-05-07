@@ -2,6 +2,7 @@
 using BeautyCenter_.Net_Angular.DTO;
 using BeautyCenter_.Net_Angular.Models;
 using BeautyCenter_.Net_Angular.UnitOfWork;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BeautyCenter_.Net_Angular.Controllers
