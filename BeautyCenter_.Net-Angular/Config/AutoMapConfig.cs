@@ -9,6 +9,7 @@ namespace BeautyCenter_.Net_Angular.Config
         public AutoMapConfig() 
         {
             CreateMap<Userr, User>();
+            CreateMap<User, Userr>();
         }
     }
 }

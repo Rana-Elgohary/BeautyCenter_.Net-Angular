@@ -24,19 +24,21 @@ namespace BeautyCenter_.Net_Angular.Controllers
         public ActionResult GetAll()
         {
             List<Userr> userrs = unit.UserRepository.selectall();
-            List<User> usersDTO = new List<User>();
+            //List<User> usersDTO = new List<User>();
 
-            foreach (Userr userr in userrs)
-            {
-                User userDTO = new User() { 
-                    Id = userr.Id,
-                    Name = userr.Name,
-                    Email = userr.Email,
-                    Password = userr.Password,
-                    BankAccount = userr.BankAccount 
-                };
-                usersDTO.Add(userDTO);
-            }
+            //foreach (Userr userr in userrs)
+            //{
+            //    User userDTO = new User() { 
+            //        Id = userr.Id,
+            //        Name = userr.Name,
+            //        Email = userr.Email,
+            //        Password = userr.Password,
+            //        BankAccount = userr.BankAccount 
+            //    };
+            //    usersDTO.Add(userDTO);
+            //}
+
+            List<User> usersDTO = mapper.Map<List<User>>(userrs);
             return Ok(usersDTO);
         }
 
@@ -69,13 +71,15 @@ namespace BeautyCenter_.Net_Angular.Controllers
                 return BadRequest();
             else
             {
-                Userr userr = new Userr();
+                //Userr userr = new Userr();
 
-                userr.Id = userDTO.Id;
-                userr.Name = userDTO.Name;
-                userr.Email = userDTO.Email;
-                userr.Password = userDTO.Password;
-                userr.BankAccount = userDTO.BankAccount;
+                //userr.Id = userDTO.Id;
+                //userr.Name = userDTO.Name;
+                //userr.Email = userDTO.Email;
+                //userr.Password = userDTO.Password;
+                //userr.BankAccount = userDTO.BankAccount;
+
+                Userr userr = mapper.Map<Userr>(userDTO);
 
                 unit.UserRepository.add(userr);
                 unit.UserRepository.save();
@@ -91,12 +95,14 @@ namespace BeautyCenter_.Net_Angular.Controllers
                 return BadRequest();
             else
             {
-                Userr userr = unit.UserRepository.selectbyid(userDTO.Id);
-                
-                userr.Name = userDTO.Name;
-                userr.Email = userDTO.Email;
-                userr.Password = userDTO.Password;
-                userr.BankAccount = userDTO.BankAccount;
+                //Userr userr = unit.UserRepository.selectbyid(userDTO.Id);
+
+                //userr.Name = userDTO.Name;
+                //userr.Email = userDTO.Email;
+                //userr.Password = userDTO.Password;
+                //userr.BankAccount = userDTO.BankAccount;
+
+                Userr userr = mapper.Map<Userr>(unit.UserRepository.selectbyid(userDTO.Id));
                 
                 unit.UserRepository.update(userr);
                 unit.UserRepository.save();
