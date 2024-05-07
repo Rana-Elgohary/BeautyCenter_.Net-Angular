@@ -10,6 +10,9 @@ namespace BeautyCenter_.Net_Angular.Config
         {
             CreateMap<Userr, User>();
             CreateMap<User, Userr>();
+
+            CreateMap<PackageUserDTO, PackageUser>();
+            CreateMap<PackageUser, PackageUserDTO>();
         }
     }
 }
