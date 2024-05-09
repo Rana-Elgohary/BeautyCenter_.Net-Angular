@@ -1,6 +1,8 @@
-﻿using BeautyCenter_.Net_Angular.DTO;
+﻿using AutoMapper;
+using BeautyCenter_.Net_Angular.DTO;
 using BeautyCenter_.Net_Angular.Models;
 using BeautyCenter_.Net_Angular.UnitOfWork;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BeautyCenter_.Net_Angular.Controllers
@@ -11,13 +13,17 @@ namespace BeautyCenter_.Net_Angular.Controllers
     {
         UnitWork unit;
         BeautyCenterContext db;
+        private readonly IMapper mapper;
 
 
 
-        public PackageController(UnitWork unit)
+        public PackageController(UnitWork unit , IMapper mapper)
         {
             this.unit = unit;
+            this.mapper = mapper;
         }
+
+
 
         [HttpGet]
         public IActionResult GetAll()
@@ -27,35 +33,28 @@ namespace BeautyCenter_.Net_Angular.Controllers
 
             foreach(Package package in packages)
             {
-                PackageD PDTO = new PackageD()
-                {
-                    Id = package.Id,
-                    Name = package.Name,
-                    Price = package.Price,
-                    ServicesName = package.Services.Select(s => s.Name).ToList()
-
-                };
+                PackageD PDTO = mapper.Map<PackageD>(package);
                 packagesDTO.Add(PDTO);
             }
             return Ok(packagesDTO);
         }
 
+
+
+
         [HttpGet("{id}")]
 
         public IActionResult Get(int id)
         {
-            Package package = unit.PackageRepository.selectbyid(id);
-            PackageD PDTO = new PackageD()
-            {
-                Id = package.Id,
-                Name = package.Name,
-                Price = package.Price,
-                ServicesName=package.Services.Select(s=>s.Name).ToList()
-            };
+            Package package = unit.PackageRepository.selectallPackagesWithServicesID(id);
+            PackageD PDTO = mapper.Map<PackageD>(package);
             return Ok(PDTO);
 
 
         }
+
+
+
 
         [HttpPost("add")]
         public IActionResult add(PackageADD packageDto)
@@ -119,6 +118,7 @@ namespace BeautyCenter_.Net_Angular.Controllers
             unit.SaveChanges();
             return Ok();
         }
+
 
 
         [HttpDelete("{id}")]

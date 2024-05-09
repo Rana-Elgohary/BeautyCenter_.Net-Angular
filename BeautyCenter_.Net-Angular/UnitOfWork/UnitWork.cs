@@ -1,4 +1,5 @@
-﻿using BeautyCenter_.Net_Angular.Models;
+﻿using BeautyCenter_.Net_Angular.Controllers;
+using BeautyCenter_.Net_Angular.Models;
 using BeautyCenter_.Net_Angular.Repository;
 
 namespace BeautyCenter_.Net_Angular.UnitOfWork
@@ -11,6 +12,8 @@ namespace BeautyCenter_.Net_Angular.UnitOfWork
         GenericRepository<ServiceResponse> serviceRepository;
         GenericRepository<Userr> userRepository;
         GenericRepository<UserService> userServiceRepository;
+
+
 
         public UnitWork(BeautyCenterContext db)
         {

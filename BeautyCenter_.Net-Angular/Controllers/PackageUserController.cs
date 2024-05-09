@@ -3,6 +3,8 @@ using BeautyCenter_.Net_Angular.Models;
 using BeautyCenter_.Net_Angular.UnitOfWork;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BeautyCenter_.Net_Angular.Controllers
 {
@@ -11,33 +13,35 @@ namespace BeautyCenter_.Net_Angular.Controllers
     public class PackageUserController : ControllerBase
     {
         UnitWork unit;
-        public PackageUserController(UnitWork unit)
+        IMapper mapper;
+
+        public PackageUserController(UnitWork unit, IMapper mapper)
         {
             this.unit = unit;
+            this.mapper = mapper;
         }
 
         //Get all users with packages and date:
-        [HttpGet] 
+        [HttpGet]
         public ActionResult getAllPackageUser()
         {
             List<PackageUser> allPackageUser = unit.PackageUserRepository.selectAllFromPU();
 
-            List<PackageUserDTO> userPackageListDTO = new List<PackageUserDTO>();
+            List<PackageUserDTO> userPackageListDTO = mapper.Map<List<PackageUserDTO>>(allPackageUser);
 
 
-            foreach (PackageUser PackageUser in allPackageUser)
-
-            {
-                PackageUserDTO pakcageUserDTO = new PackageUserDTO()
-                {
-                    PackageId = PackageUser.PackageId,
-                    UserId = PackageUser.UserId,
-                    Date = PackageUser.Date,
-                    packageName = PackageUser.Package.Name,
-                    userName = PackageUser.User.Name,
-                };
-                userPackageListDTO.Add(pakcageUserDTO);
-            }
+            //foreach (PackageUser PackageUser in allPackageUser)
+            //{
+            //    PackageUserDTO pakcageUserDTO = new PackageUserDTO()
+            //    {
+            //        PackageId = PackageUser.PackageId,
+            //        UserId = PackageUser.UserId,
+            //        Date = PackageUser.Date,
+            //        packageName = PackageUser.Package.Name,
+            //        userName = PackageUser.User.Name,
+            //    };
+            //    userPackageListDTO.Add(pakcageUserDTO);
+            //}
             return Ok(userPackageListDTO);
         }
 
@@ -54,13 +58,12 @@ namespace BeautyCenter_.Net_Angular.Controllers
             }
             else
             {
-                PackageUserDTO packageUserDTO = new PackageUserDTO()
-                {
-                    Date = selectedPackageUser.Date,
-                    packageName = selectedPackageUser.Package.Name,
-                    userName = selectedPackageUser.User.Name,
-
-                };
+                PackageUserDTO packageUserDTO = mapper.Map<PackageUserDTO>(selectedPackageUser);
+                //{
+                //    Date = selectedPackageUser.Date,
+                //    packageName = selectedPackageUser.Package.Name,
+                //    userName = selectedPackageUser.User.Name,
+                //};
 
                 return Ok(packageUserDTO);
             }
@@ -78,28 +81,27 @@ namespace BeautyCenter_.Net_Angular.Controllers
             }
             else
             {
-                List<PackageUserDTO> packagesOfUserDTO = new List<PackageUserDTO>();
-                foreach (PackageUser PackageUser in packagesOfUser)
+                List<PackageUserDTO> packagesOfUserDTO = mapper.Map<List<PackageUserDTO>>(packagesOfUser);
 
-                {
-                    PackageUserDTO pakcageUserDTO = new PackageUserDTO()
-                    {
-                        PackageId = PackageUser.PackageId,
-                        UserId = PackageUser.UserId,
-                        Date = PackageUser.Date,
-                        packageName = PackageUser.Package.Name,
-                        userName = PackageUser.User.Name,
-                    };
-                    packagesOfUserDTO.Add(pakcageUserDTO);
-                }
+                //foreach (PackageUser PackageUser in packagesOfUser)
+                //{
+                //    PackageUserDTO pakcageUserDTO = new PackageUserDTO()
+                //    {
+                //        PackageId = PackageUser.PackageId,
+                //        UserId = PackageUser.UserId,
+                //        Date = PackageUser.Date,
+                //        packageName = PackageUser.Package.Name,
+                //        userName = PackageUser.User.Name,
+                //    };
+                //    packagesOfUserDTO.Add(pakcageUserDTO);
                 return Ok(packagesOfUserDTO);
             }
-
         }
+  
         //------------------------------------------------------------------
 
         //Get users and it's reservation date by package name:
-        [HttpGet("api/users-by-package/{PackageId}")] // :)
+        [HttpGet("api/users-by-package/{PackageId}")] 
         public ActionResult getUsersOfPackage(int PackageId)
         {
             List<PackageUser> usersOfPackage = unit.PackageUserRepository.getByPackageIdfromPU(PackageId);
@@ -109,21 +111,19 @@ namespace BeautyCenter_.Net_Angular.Controllers
             }
             else
             {
-                List<PackageUserDTO> usersOfPackageDTO = new List<PackageUserDTO>();
+                List<PackageUserDTO> usersOfPackageDTO = mapper.Map<List<PackageUserDTO>>(usersOfPackage);            //foreach (PackageUser PackageUser in usersOfPackage)
 
-                foreach (PackageUser PackageUser in usersOfPackage)
-
-                {
-                    PackageUserDTO pakcageUserDTO = new PackageUserDTO()
-                    {
-                        PackageId = PackageUser.PackageId,
-                        UserId = PackageUser.UserId,
-                        Date = PackageUser.Date,
-                        packageName = PackageUser.Package.Name,
-                        userName = PackageUser.User.Name,
-                    };
-                    usersOfPackageDTO.Add(pakcageUserDTO);
-                }
+                //{
+                //    PackageUserDTO pakcageUserDTO = new PackageUserDTO()
+                //    {
+                //        PackageId = PackageUser.PackageId,
+                //        UserId = PackageUser.UserId,
+                //        Date = PackageUser.Date,
+                //        packageName = PackageUser.Package.Name,
+                //        userName = PackageUser.User.Name,
+                //    };
+                //    usersOfPackageDTO.Add(pakcageUserDTO);
+                //}
                 return Ok(usersOfPackageDTO);
 
             }
@@ -131,7 +131,7 @@ namespace BeautyCenter_.Net_Angular.Controllers
         //---------------------------------------------------------------------
 
         //Get packages and users by specific date:
-        [HttpGet("{Date}")] //body el date elly byb3to ghareb..
+        [HttpGet("{Date}")] 
         public ActionResult getUserPackageByDate(DateTime Date)
         {
             List<PackageUser> packageUsers = unit.PackageUserRepository.getPackageUserByDate(Date);
@@ -141,20 +141,19 @@ namespace BeautyCenter_.Net_Angular.Controllers
             }
             else
             {
-                List<PackageUserDTO> packageUsersDTOList = new List<PackageUserDTO>();
-                foreach (PackageUser PackageUser in packageUsers)
+                List<PackageUserDTO> packageUsersDTOList = mapper.Map<List<PackageUserDTO>>(packageUsers);     //foreach (PackageUser PackageUser in packageUsers)
 
-                {
-                    PackageUserDTO pakcageUserDTO = new PackageUserDTO()
-                    {
-                        PackageId = PackageUser.PackageId,
-                        UserId = PackageUser.UserId,
-                        Date = PackageUser.Date,
-                        packageName = PackageUser.Package.Name,
-                        userName = PackageUser.User.Name,
-                    };
-                    packageUsersDTOList.Add(pakcageUserDTO);
-                }
+                //{
+                //    PackageUserDTO pakcageUserDTO = new PackageUserDTO()
+                //    {
+                //        PackageId = PackageUser.PackageId,
+                //        UserId = PackageUser.UserId,
+                //        Date = PackageUser.Date,
+                //        packageName = PackageUser.Package.Name,
+                //        userName = PackageUser.User.Name,
+                //    };
+                //    packageUsersDTOList.Add(pakcageUserDTO);
+                //}
                 return Ok(packageUsersDTOList);
 
             }
@@ -163,6 +162,7 @@ namespace BeautyCenter_.Net_Angular.Controllers
 
         //Adding new PackageUser:
         [HttpPost]
+        [Authorize]
         public ActionResult addPackageUser(PackageUserDTO newPackageUser)
         {
             Package package = unit.PackageRepository.selectbyid(newPackageUser.PackageId);
@@ -184,12 +184,12 @@ namespace BeautyCenter_.Net_Angular.Controllers
             
             else
             {
-                PackageUser packageUser = new PackageUser()
-                {
-                    PackageId = newPackageUser.PackageId,
-                    UserId = newPackageUser.UserId,
-                    Date = newPackageUser.Date
-                };
+                PackageUser packageUser = mapper.Map <PackageUser> (newPackageUser);
+                //{
+                //    PackageId = newPackageUser.PackageId,
+                //    UserId = newPackageUser.UserId,
+                //    Date = newPackageUser.Date
+                //};
                 unit.PackageUserRepository.add(packageUser);
                 unit.PackageUserRepository.save();
                 return Ok(newPackageUser);
@@ -199,6 +199,7 @@ namespace BeautyCenter_.Net_Angular.Controllers
 
         //Update:
         [HttpPut]
+        [Authorize]
         public ActionResult updatePackageUser(int userId, int packageId, DateTime date)
         {
             // Fetch the existing PackageUser
@@ -226,6 +227,7 @@ namespace BeautyCenter_.Net_Angular.Controllers
         //Delete by Composite key:
 
         [HttpDelete("{userId:int}/{packageId:int}")]
+        [Authorize]
         public ActionResult deletePackageUserByID(int userId,int packageId)
         {
             PackageUser packageUser= unit.PackageUserRepository.getByCompositeKeyPU(userId,packageId);

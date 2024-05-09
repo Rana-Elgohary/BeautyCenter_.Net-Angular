@@ -3,6 +3,7 @@
 using BeautyCenter_.Net_Angular.Models;
 using Microsoft.EntityFrameworkCore;
 
+
 ﻿using BeautyCenter_.Net_Angular.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,10 @@ namespace BeautyCenter_.Net_Angular.Repository
         public List<Package> selectallPackagesWithServices()
         {
             return db.Packages.Include(s=> s.Services).ToList();
+        }
+        public Package selectallPackagesWithServicesID(int id)
+        {
+            return db.Packages.Include(s => s.Services).First(s => s.Id == id);
         }
 
         public type selectbyid(int id)
@@ -184,7 +189,10 @@ namespace BeautyCenter_.Net_Angular.Repository
         }
 
 
-    
+        public Userr getUserr(string username , string pass)
+        {
+            return  db.Set<Userr>().First(s=>s.Name==username && s.Password==pass);
+        }
 
         public void save()
         {
