@@ -184,7 +184,11 @@ namespace BeautyCenter_.Net_Angular.Repository
             return ls;
         }
 
-
+        public List<string> GetAllCategories()
+        {
+            List<string> ls = db.Services.Select(s=>s.Category).Distinct().ToList();
+            return ls;
+        }
     
 
         public void save()

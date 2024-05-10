@@ -1,4 +1,5 @@
-﻿using BeautyCenter_.Net_Angular.DTO;
+﻿using AutoMapper;
+using BeautyCenter_.Net_Angular.DTO;
 using BeautyCenter_.Net_Angular.Models;
 using BeautyCenter_.Net_Angular.UnitOfWork;
 using Microsoft.AspNetCore.Http;
@@ -15,42 +16,47 @@ namespace BeautyCenter_.Net_Angular.Controllers
     public class ServicesController : ControllerBase
     {
         UnitWork unit;
-        public ServicesController(UnitWork unit)
+        IMapper mapper;
+        public ServicesController(UnitWork unit,IMapper mapper)
         {
             this.unit = unit;
+            this.mapper=mapper;
         }
 
 
 
 
+        //here a problem
 
 
-        [HttpGet]
-        public IActionResult GetAllServices()
-        {
-            List<ServiceResponse> ServiseList = unit.ServiceRepository.selectall();
-            List<serviceD> ServiseListDTO = new List<serviceD>();
-            foreach (ServiceResponse serv in ServiseList)
-            {
-                serviceD servD = new serviceD()
-                {
-                    Id = serv.Id,
-                    Name = serv.Name,
-                    Price = serv.Price,
-                    Category = serv.Category,
-                };
-                ServiseListDTO.Add(servD);
-            }
-            if (ServiseListDTO.Count > 0)
-            {
-                return Ok(ServiseListDTO);
+        //[HttpGet]
+        //public IActionResult GetAllServices()
+        //{
+        //    List<ServiceResponse> ServiseList = unit.ServiceRepository.selectall();
+        //    //List<serviceD> ServiseListDTO = new List<serviceD>();
+        //    //foreach (ServiceResponse serv in ServiseList)
+        //    //{
+        //    //  serviceD servD = new serviceD()
+        //    //  {
+        //    //    Id = serv.Id,
+        //    //    Name = serv.Name,
+        //    //    Price = serv.Price,
+        //    //    Category = serv.Category,
+        //    //  };
+        //    //ServiseListDTO.Add(servD);
+        //    //}
+        //    List<serviceD> ServiseListDTO = mapper.Map<List<serviceD>>(ServiseList);
 
-            }
-            else
-            {
-                return NotFound();
-            }
-        }
+        //    if (ServiseListDTO.Count > 0)
+        //    {
+        //        return Ok(ServiseListDTO);
+
+        //    }
+        //    else
+        //    {
+        //        return NotFound();
+        //    }
+        //}
 
         [HttpGet("{id:int}")]
         public IActionResult GetServiceById(int id)
@@ -67,17 +73,22 @@ namespace BeautyCenter_.Net_Angular.Controllers
             }
             else
             {
-                serviceD serviceDTO = new serviceD()
-                {
-                    Id = service.Id,
-                    Name = service.Name,
-                    Price = service.Price,
-                    Category = service.Category,
-                };
+                //serviceD serviceDTO = new serviceD()
+                //{
+                //    Id = service.Id,
+                //    Name = service.Name,
+                //    Price = service.Price,
+                //    Category = service.Category,
+                //};
+                serviceD serviceDTO=mapper.Map<serviceD>(service);
                 return Ok(serviceDTO);
 
             }
         }
+
+
+        //here a problem
+
         //[HttpGet("/api/SerName/{name}")]
         //public IActionResult GetServiceByName(string name)
         //{
@@ -115,20 +126,34 @@ namespace BeautyCenter_.Net_Angular.Controllers
             else
             {
                 List<ServiceResponse> ListOfServices = unit.ServiceRepository.GetServicesByCategory(categ);
-                List<serviceD> ListOfServicesDTO = new List<serviceD>();
-                foreach (ServiceResponse service in ListOfServices)
-                {
-                    serviceD servD = new serviceD()
-                    {
-                        Id = service.Id,
-                        Name = service.Name,
-                        Price = service.Price,
-                        Category=service.Category
-                    };
-                    ListOfServicesDTO.Add(servD);
-                }
+                //List<serviceD> ListOfServicesDTO = new List<serviceD>();
+                //foreach (ServiceResponse service in ListOfServices)
+                //{
+                //    serviceD servD = new serviceD()
+                //    {
+                //        Id = service.Id,
+                //        Name = service.Name,
+                //        Price = service.Price,
+                //        Category=service.Category
+                //    };
+                //    ListOfServicesDTO.Add(servD);
+                //}
+                List<serviceD> ListOfServicesDTO = mapper.Map<List<serviceD>>(ListOfServices);
                 return Ok(ListOfServicesDTO);
             }
+        }
+
+        //here a problem
+
+        [HttpGet]
+        public IActionResult GetAllCategories()
+        {
+            List<string> ListOfCategories=unit.ServiceRepository.GetAllCategories();
+            if(ListOfCategories == null || ListOfCategories.Count<0)
+            {
+                return NotFound();
+            }
+            return Ok(ListOfCategories);
         }
         
 
@@ -141,19 +166,22 @@ namespace BeautyCenter_.Net_Angular.Controllers
             }
             else
             {
-                ServiceResponse NewService = new ServiceResponse()
-                {
-                    Id = service.Id,
-                    Name= service.Name,
-                    Price = service.Price,
-                    Category= service.Category,
-                };
+                //ServiceResponse NewService = new ServiceResponse()
+                //{
+                //    Id = service.Id,
+                //    Name= service.Name,
+                //    Price = service.Price,
+                //    Category= service.Category,
+                //};
+
+                ServiceResponse NewService=mapper.Map<ServiceResponse>(service);
                 unit.ServiceRepository.add(NewService);
                 unit.ServiceRepository.save();
                 return Ok(service);
             }
         }
 
+        //here a problem
 
 
         [HttpPut]
@@ -170,17 +198,18 @@ namespace BeautyCenter_.Net_Angular.Controllers
             }
             else
             {
-                serv.Name = service.Name;
-                serv.Price = service.Price;
-                serv.Category = service.Category;
-                
-                unit.ServiceRepository.update(serv);
+                //serv.Name = service.Name;
+                //serv.Price = service.Price;
+                //serv.Category = service.Category;
+                ServiceResponse serv2 = mapper.Map<ServiceResponse>(serv);
+
+                unit.ServiceRepository.update(serv2);
                 unit.ServiceRepository.save();
                 return Ok(service);
             }    
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:int}")]
         public IActionResult DeleteServiceById(int id)
         {
             if(id==0)
