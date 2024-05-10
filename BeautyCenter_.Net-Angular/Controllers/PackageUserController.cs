@@ -4,6 +4,7 @@ using BeautyCenter_.Net_Angular.UnitOfWork;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BeautyCenter_.Net_Angular.Controllers
 {
@@ -161,6 +162,7 @@ namespace BeautyCenter_.Net_Angular.Controllers
 
         //Adding new PackageUser:
         [HttpPost]
+        [Authorize]
         public ActionResult addPackageUser(PackageUserDTO newPackageUser)
         {
             Package package = unit.PackageRepository.selectbyid(newPackageUser.PackageId);
@@ -197,6 +199,7 @@ namespace BeautyCenter_.Net_Angular.Controllers
 
         //Update:
         [HttpPut]
+        [Authorize]
         public ActionResult updatePackageUser(int userId, int packageId, DateTime date)
         {
             // Fetch the existing PackageUser
@@ -224,6 +227,7 @@ namespace BeautyCenter_.Net_Angular.Controllers
         //Delete by Composite key:
 
         [HttpDelete("{userId:int}/{packageId:int}")]
+        [Authorize]
         public ActionResult deletePackageUserByID(int userId,int packageId)
         {
             PackageUser packageUser= unit.PackageUserRepository.getByCompositeKeyPU(userId,packageId);

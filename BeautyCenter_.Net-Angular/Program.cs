@@ -3,6 +3,8 @@ using BeautyCenter_.Net_Angular.Config;
 using BeautyCenter_.Net_Angular.Models;
 using BeautyCenter_.Net_Angular.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace BeautyCenter_.Net_Angular
 {
@@ -39,6 +41,31 @@ namespace BeautyCenter_.Net_Angular
 
             /// For generic repo:
             builder.Services.AddScoped<UnitWork>();
+
+
+            ///validate token 
+
+            builder.Services.AddAuthentication(option => option.DefaultAuthenticateScheme = "myscheme")
+                .AddJwtBearer("myscheme",
+                //validate token
+                op =>
+                {
+                    #region secret key
+                    string key = "welcome to my secret key BeautyCenter Alex";
+                    var secertkey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key));
+                    #endregion
+                    op.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        IssuerSigningKey = secertkey,
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+
+                    };
+                }
+                );
+
+
+
 
             /// For Auto Mapper:
             builder.Services.AddAutoMapper(typeof(AutoMapConfig).Assembly);

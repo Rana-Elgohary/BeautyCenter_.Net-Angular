@@ -33,6 +33,10 @@ namespace BeautyCenter_.Net_Angular.Repository
         {
             return db.Packages.Include(s=> s.Services).ToList();
         }
+        public Package selectallPackagesWithServicesID(int id)
+        {
+            return db.Packages.Include(s => s.Services).First(s => s.Id == id);
+        }
 
         public type selectbyid(int id)
         {
@@ -176,13 +180,22 @@ namespace BeautyCenter_.Net_Angular.Repository
             List<ServiceResponse> ls =db.Services.Where(s => s.Category == Categ).ToList();
             return ls;
         }
+  /////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///here e7tyaty
+        //public List<ServiceResponse> GetServicesByName(string Name)
+        //{
 
-        public List<ServiceResponse> GetServicesByName(string Name)
+        //    List<ServiceResponse> ls = db.Services.Where(s => s.Name == Name).ToList();
+        //    return ls;
+        //}
+
+        public ServiceResponse GetServicesByName(string Name)
         {
 
-            List<ServiceResponse> ls = db.Services.Where(s => s.Name == Name).ToList();
+            ServiceResponse ls = db.Services.SingleOrDefault(s => s.Name == Name);
             return ls;
         }
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
         public List<string> GetAllCategories()
         {
@@ -190,6 +203,11 @@ namespace BeautyCenter_.Net_Angular.Repository
             return ls;
         }
     
+
+        public Userr getUserr(string username , string pass)
+        {
+            return  db.Set<Userr>().First(s=>s.Name==username && s.Password==pass);
+        }
 
         public void save()
         {
