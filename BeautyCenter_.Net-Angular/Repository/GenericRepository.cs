@@ -180,14 +180,29 @@ namespace BeautyCenter_.Net_Angular.Repository
             List<ServiceResponse> ls =db.Services.Where(s => s.Category == Categ).ToList();
             return ls;
         }
+  /////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///here e7tyaty
+        //public List<ServiceResponse> GetServicesByName(string Name)
+        //{
 
-        public List<ServiceResponse> GetServicesByName(string Name)
+        //    List<ServiceResponse> ls = db.Services.Where(s => s.Name == Name).ToList();
+        //    return ls;
+        //}
+
+        public ServiceResponse GetServicesByName(string Name)
         {
 
-            List<ServiceResponse> ls = db.Services.Where(s => s.Name == Name).ToList();
+            ServiceResponse ls = db.Services.SingleOrDefault(s => s.Name == Name);
             return ls;
         }
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        public List<string> GetAllCategories()
+        {
+            List<string> ls = db.Services.Select(s=>s.Category).Distinct().ToList();
+            return ls;
+        }
+    
 
         public Userr getUserr(string username , string pass)
         {

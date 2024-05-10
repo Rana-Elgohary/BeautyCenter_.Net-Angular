@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BeautyCenter_.Net_Angular.DTO;
+//using BeautyCenter_.Net_Angular.Models;
 using BeautyCenter_.Net_Angular.Models;
 
 namespace BeautyCenter_.Net_Angular.Config
@@ -15,6 +16,11 @@ namespace BeautyCenter_.Net_Angular.Config
 
             CreateMap<PackageUserDTO, PackageUser>();
             CreateMap<PackageUser, PackageUserDTO>();
+
+
+            CreateMap<serviceD,ServiceResponse>();
+            CreateMap<ServiceResponse,serviceD>();
+
         }
     }
 }
