@@ -8,8 +8,13 @@ import { PackageUser } from '../_model/package-user';
 export class PackageUserService {
 
   baseurl ="https://localhost:7206/api/PackageUser/"; //step2 to connect to db
+  baseUrlForGetByUserID="https://localhost:7206/api/PackageUser/api/packages-by-user";
   constructor(public http:HttpClient) { }
   getall(){
     return this.http.get<PackageUser[]>(this.baseurl);  //step3 to connect to db
+  }
+  getByUserId(id: number) {
+    const url = `${this.baseUrlForGetByUserID}/${id}`;
+    return this.http.get<PackageUser[]>(url);
   }
 }

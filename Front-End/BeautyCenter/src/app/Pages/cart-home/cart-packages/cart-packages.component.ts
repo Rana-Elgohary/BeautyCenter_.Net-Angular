@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PackageUser } from '../../../_model/package-user';
 import { PackageUserService } from '../../../services/package-user.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cart-packages',
@@ -12,15 +13,19 @@ import { PackageUserService } from '../../../services/package-user.service';
 export class CartPackagesComponent implements OnInit{
 
   packageUser:PackageUser[]=[];
-  constructor(public packageUserSERV:PackageUserService ){
+  userId!:number;
+  constructor(public packageUserSERV:PackageUserService ,public ActivateRoute:ActivatedRoute ){
 
   }
   ngOnInit(): void {
     console.log("hi");
-    this.packageUserSERV.getall().subscribe(data=>{
+    this.ActivateRoute.params.subscribe(params=>{
+      this.userId=params['userId'];
+   
+    this.packageUserSERV.getByUserId(this.userId).subscribe(data=>{
       this.packageUser=data;
       console.log(this.packageUser)  })
-    
+    })
 
     }
 

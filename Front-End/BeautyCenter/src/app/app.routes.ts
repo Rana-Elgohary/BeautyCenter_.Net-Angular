@@ -3,5 +3,5 @@ import { CartHomeComponent } from './Pages/cart-home/cart-home.component';
 
 export const routes: Routes = [
 
-    {path:'Cart',component:CartHomeComponent}
+    { path: 'Cart/:userId', component: CartHomeComponent }
 ];

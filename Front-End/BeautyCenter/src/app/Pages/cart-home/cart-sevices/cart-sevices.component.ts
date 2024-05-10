@@ -5,6 +5,7 @@ import { ServiceUserService } from '../../../services/service-user.service';
 import { Service } from '../../../_model/service';
 import { ServiceService } from '../../../services/serviceM.service';
 import { forkJoin } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cart-sevices',
@@ -17,23 +18,57 @@ export class CartSevicesComponent implements OnInit{
 
   servUserM:ServiceUser[]=[];
   ServM:Service[]=[];
-  constructor(public serviceUse:ServiceUserService ,public servServ:ServiceService){
+  userId!:number;
+  constructor(public serviceUse:ServiceUserService ,public servServ:ServiceService , public ActivatedRoute :ActivatedRoute){
 
   }
   ngOnInit(): void {
-    this.serviceUse.getall().subscribe(data => {
-      this.servUserM = data;
-      console.log(this.servUserM);
+    // Subscribe to changes in the route parameters
+    this.ActivatedRoute.params.subscribe(params => {
+      // Extract the user ID from the route parameters
+      this.userId = params['userId'];
+      
+      // Call the method to get service users by user ID
+      this.serviceUse.getByUserId(this.userId).subscribe(data => {
+        this.servUserM = data;
 
-      const requests = this.servUserM.map(element => {
-        return this.servServ.getById(element.serviceId);
-      });
+        console.log(this.servUserM);
 
-      forkJoin(requests).subscribe((responses: Service[]) => {
-        responses.forEach((response, index) => {
-          this.servUserM[index].serviceInfo = response;
+        const requests = this.servUserM.map(element => {
+          return this.servServ.getById(element.serviceId);
+        });
+
+        forkJoin(requests).subscribe((responses: Service[]) => {
+          responses.forEach((response, index) => {
+            this.servUserM[index].serviceInfo = response;
+          });
         });
       });
     });
   }
 }
+
+
+
+
+
+
+
+
+// ngOnInit(): void {
+//   this.serviceUse.getall().subscribe(data => {
+//     this.servUserM = data;
+//     console.log(this.servUserM);
+
+//     const requests = this.servUserM.map(element => {
+//       return this.servServ.getById(element.serviceId);
+//     });
+
+//     forkJoin(requests).subscribe((responses: Service[]) => {
+//       responses.forEach((response, index) => {
+//         this.servUserM[index].serviceInfo = response;
+//       });
+//     });
+//   });
+// }
+// }
