@@ -10,10 +10,9 @@ namespace BeautyCenter_.Net_Angular.Config
         public AutoMapConfig() 
         {
             CreateMap<Userr, User>();
-            CreateMap<Package, PackageD>()
-                        .ForMember(dest => dest.Service, opt => opt.MapFrom(src => src.Services.Select(s => s.Name).ToList()));
             CreateMap<User, Userr>();
-
+            CreateMap<PackageService, serviceD>(); // Map PackageService to ServiceD
+            CreateMap<Package, PackageD>(); // Map Package to PackageD
             CreateMap<PackageUserDTO, PackageUser>();
             CreateMap<PackageUser, PackageUserDTO>();
 

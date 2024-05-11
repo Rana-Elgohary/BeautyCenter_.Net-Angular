@@ -7,7 +7,7 @@ namespace BeautyCenter_.Net_Angular.DTO
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal? Price { get; set; }
-        public List<serviceD> ServicesId { get; set; } = new List<serviceD>();
+        public List<int> ServicesId { get; set; } = new List<int>();
     }
 }
 

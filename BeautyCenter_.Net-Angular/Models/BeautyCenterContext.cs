@@ -49,29 +49,24 @@ public partial class BeautyCenterContext : DbContext
                 .HasConstraintName("FK__PackageUs__UserI__4CA06362");
         });
 
-        modelBuilder.Entity<ServiceResponse>(entity =>
+        modelBuilder.Entity<PackageService>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__service__3214EC07AC3A8DFE");
+            entity.HasKey(ps => new { ps.ServiceId, ps.PackageId });
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.HasOne(ps => ps.Package)
+                  .WithMany(p => p.PackageServices)
+                  .HasForeignKey(ps => ps.PackageId);
 
-            entity.HasMany(d => d.Packages).WithMany(p => p.Services)
-                .UsingEntity<Dictionary<string, object>>(
-                    "PackageService",
-                    r => r.HasOne<Package>().WithMany()
-                        .HasForeignKey("PackageId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__PackageSe__Packa__49C3F6B7"),
-                    l => l.HasOne<ServiceResponse>().WithMany()
-                        .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__PackageSe__Servi__48CFD27E"),
-                    j =>
-                    {
-                        j.HasKey("ServiceId", "PackageId").HasName("PK__PackageS__1639B356D184A2A3");
-                        j.ToTable("PackageService");
-                    });
+            entity.HasOne(ps => ps.Service)
+                  .WithMany(s => s.PackageServices)
+                  .HasForeignKey(ps => ps.ServiceId);
+
+            // Optionally, if you want to define a unique constraint on (ServiceId, PackageId) in the PackageService table
+            entity.HasIndex(ps => new { ps.ServiceId, ps.PackageId }).IsUnique();
+
+            entity.ToTable("PackageService");
         });
+
 
         modelBuilder.Entity<UserService>(entity =>
         {

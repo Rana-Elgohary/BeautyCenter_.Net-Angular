@@ -12,6 +12,7 @@ namespace BeautyCenter_.Net_Angular.UnitOfWork
         GenericRepository<ServiceResponse> serviceRepository;
         GenericRepository<Userr> userRepository;
         GenericRepository<UserService> userServiceRepository;
+        GenericRepository<PackageService> packageServiceRepository;
 
 
 
@@ -77,6 +78,17 @@ namespace BeautyCenter_.Net_Angular.UnitOfWork
                     userServiceRepository = new GenericRepository<UserService>(db);
                 }
                 return userServiceRepository;
+            }
+        }
+        public GenericRepository<PackageService> PackageServiceRepository
+        {
+            get
+            {
+                if (packageServiceRepository == null)
+                {
+                    packageServiceRepository = new GenericRepository<PackageService>(db);
+                }
+                return packageServiceRepository;
             }
         }
 

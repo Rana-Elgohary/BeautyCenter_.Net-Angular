@@ -29,14 +29,32 @@ namespace BeautyCenter_.Net_Angular.Repository
         {
             return db.Set<type>().ToList();
         }
-        public List<Package> selectallPackagesWithServices()
+        public List<Package> SelectAllPackagesWithServices()
         {
-            return db.Packages.Include(s=> s.Services).ToList();
+            var packagesWithServices = db.Packages
+                .Include(p => p.PackageServices) // Include the PackageServices navigation property
+                .ThenInclude(ps => ps.Service)   // Include the Service navigation property within PackageServices
+                .ToList();
+
+            return packagesWithServices;
         }
-        public Package selectallPackagesWithServicesID(int id)
+
+
+
+        public Package SelectPackageWithServicesById(int packageId)
         {
-            return db.Packages.Include(s => s.Services).First(s => s.Id == id);
+            var packageWithServices = db.Packages
+                .Include(p => p.PackageServices) // Include the PackageServices navigation property
+                .ThenInclude(ps => ps.Service)   // Include the Service navigation property within PackageServices
+                .FirstOrDefault(p => p.Id == packageId); // Fetch the package by its ID
+
+            return packageWithServices;
         }
+
+        //public Package selectallPackagesWithServicesID(int id)
+        //{
+        //    return db.Packages.Include(s => s.Services).First(s => s.Id == id);
+        //}
 
         public type selectbyid(int id)
         {
@@ -173,6 +191,20 @@ namespace BeautyCenter_.Net_Angular.Repository
             type obj = db.Set<type>().Find(id);
             db.Set<type>().Remove(obj);
         }
+
+        public void deletePackageService(int packageId)
+        {
+            var packageServicesToRemove = db.Set<PackageService>()
+                                               .Where(ps => ps.PackageId == packageId)
+                                               .ToList();
+
+            // Remove each PackageService entity from the DbSet
+            foreach (var packageService in packageServicesToRemove)
+            {
+                db.Set<PackageService>().Remove(packageService);
+            }
+        }
+
         //here getting service by category
         public List<ServiceResponse> GetServicesByCategory(string Categ)
         {

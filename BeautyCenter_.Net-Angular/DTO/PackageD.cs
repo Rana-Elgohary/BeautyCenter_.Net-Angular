@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using BeautyCenter_.Net_Angular.Models;
 
 namespace BeautyCenter_.Net_Angular.DTO
 {
@@ -9,6 +10,6 @@ namespace BeautyCenter_.Net_Angular.DTO
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal? Price { get; set; }
-        public List<string> Service { get; set; } = new List<string>();
+        public List<string> Services { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using BeautyCenter_.Net_Angular.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace BeautyCenter_.Net_Angular
 {
@@ -78,6 +79,7 @@ namespace BeautyCenter_.Net_Angular
                 app.UseSwaggerUI();
             }
 
+       
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

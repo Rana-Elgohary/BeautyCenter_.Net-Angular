@@ -23,73 +23,118 @@ namespace BeautyCenter_.Net_Angular.Controllers
             this.mapper = mapper;
         }
 
+        //--------------------------------------------------------------------------------------------------------------------------
 
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            List<Package> packages = unit.PackageRepository.selectallPackagesWithServices();   
+            List<Package> packages = unit.PackageRepository.SelectAllPackagesWithServices();
             List<PackageD> packagesDTO = new List<PackageD>();
 
-            foreach(Package package in packages)
+            foreach (Package package in packages)
             {
-                PackageD PDTO = mapper.Map<PackageD>(package);
+                PackageD PDTO = new PackageD()
+                {
+                    Id = package.Id,
+                    Name = package.Name,
+                    Price = package.Price,
+                    Services = new List<string>()  // Initialize a list to hold service names
+                };
+
+                foreach (var packageService in package.PackageServices)
+                {
+                    PDTO.Services.Add(packageService.Service.Name); // Add each service name to the list
+                }
+
                 packagesDTO.Add(PDTO);
             }
+
             return Ok(packagesDTO);
         }
 
 
 
 
+        //--------------------------------------------------------------------------------------------------------------------------
+
+
         [HttpGet("{id}")]
 
         public IActionResult Get(int id)
         {
-            Package package = unit.PackageRepository.selectallPackagesWithServicesID(id);
-            PackageD PDTO = mapper.Map<PackageD>(package);
+            Package package = unit.PackageRepository.SelectPackageWithServicesById(id);
+            PackageD PDTO = new PackageD()
+            {
+                Id = package.Id,
+                Name = package.Name,
+                Price = package.Price,
+                Services = new List<string>()  // Initialize a list to hold service names
+            };
+
+            foreach (var packageService in package.PackageServices)
+            {
+                PDTO.Services.Add(packageService.Service.Name); // Add each service name to the list
+            }
+
+
             return Ok(PDTO);
 
 
         }
 
 
+        //--------------------------------------------------------------------------------------------------------------------------
 
 
         [HttpPost("add")]
-        public IActionResult add(PackageADD packageDto)
+        public IActionResult AddPackage(PackageADD packageDto)
         {
-
             if (packageDto == null)
             {
                 return BadRequest();
             }
+
+            // Create a new Package object
             Package p = new Package()
             {
-                Id = packageDto.Id,
+                Id=packageDto.Id,
                 Name = packageDto.Name,
                 Price = packageDto.Price
             };
-            //List<Service> s = new List<Service>();
-            //foreach (serviceD serviceD in packageDto.ServicesId)
-            //{
-            //    Service Ser = new Service()
-            //    {
-            //        Id = serviceD.Id,
-            //        Name = serviceD.Name,
-            //        Price = serviceD.Price,
-            //        Category = serviceD.Category
-            //    };
-            //    p.Services.Add(Ser);
-            //}
+
+            // Add the Package object to the database
             unit.PackageRepository.add(p);
-            unit.SaveChanges();
+            unit.SaveChanges(); // Save changes after adding the package
+
+            // Loop through the services IDs and add PackageService objects
+            foreach (var serviceId in packageDto.ServicesId)
+            {
+                // Create a new PackageService object
+                PackageService ps = new PackageService()
+                {
+                    ServiceId = serviceId,
+                    PackageId = p.Id // Assign the ID of the newly added package
+                };
+
+                // Add the PackageService object to the database
+                unit.PackageServiceRepository.add(ps);
+            }
+
+            unit.SaveChanges(); // Save changes after adding all the package services
+
             return Ok();
         }
 
+
+
+
+
+        //--------------------------------------------------------------------------------------------------------------------------
+
         [HttpPut("edit")] // Route for editing a package
 
-        public IActionResult edit(PackageADD packageDto)
+        public IActionResult edit(PackageEdit packageDto)
         {
 
             if (packageDto == null)
@@ -102,18 +147,17 @@ namespace BeautyCenter_.Net_Angular.Controllers
                 Name = packageDto.Name,
                 Price = packageDto.Price
             };
-            //List<Service> s = new List<Service>();
-            //foreach (serviceD serviceD in packageDto.ServicesId)
+            //foreach (var serviceId in packageDto.ServicesId)
             //{
-            //    Service Ser = new Service()
+            //    PackageService ps = new PackageService()
             //    {
-            //        Id = serviceD.Id,
-            //        Name = serviceD.Name,
-            //        Price = serviceD.Price,
-            //        Category = serviceD.Category
+            //        ServiceId = serviceId,
+            //        PackageId = p.Id 
             //    };
-            //    p.Services.Add(Ser);
+
+            //    unit.PackageServiceRepository.update(ps);
             //}
+
             unit.PackageRepository.update(p);
             unit.SaveChanges();
             return Ok();
@@ -121,15 +165,16 @@ namespace BeautyCenter_.Net_Angular.Controllers
 
 
 
+
+        //--------------------------------------------------------------------------------------------------------------------------
+
         [HttpDelete("{id}")]
         public IActionResult deleteItem(int id)
         {
-            Package p = unit.PackageRepository.selectbyid(id);
-            if (p == null)
-            {
-                return BadRequest();
-            }
+   
+            unit.PackageRepository.deletePackageService(id);
             unit.PackageRepository.delete(id);
+
             unit.SaveChanges();
             return Ok();
         }
