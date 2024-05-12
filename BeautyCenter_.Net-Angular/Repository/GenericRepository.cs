@@ -234,7 +234,13 @@ namespace BeautyCenter_.Net_Angular.Repository
             List<string> ls = db.Services.Select(s=>s.Category).Distinct().ToList();
             return ls;
         }
-    
+
+        public List<string> GetAllServicesName()
+        {
+            List<string> ls = db.Services.Select(s => s.Name).Distinct().ToList();
+            return ls;
+        }
+
 
         public Userr getUserr(string username , string pass)
         {
