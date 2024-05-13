@@ -147,7 +147,20 @@ namespace BeautyCenter_.Net_Angular.Controllers
             }
             return Ok(ListOfCategories);
         }
-        
+
+
+        [HttpGet("AllServicesName")]
+        public IActionResult GetAllServicesName()
+        {
+            List<string> ListOfServicesNames = unit.ServiceRepository.GetAllServicesName();
+            if (ListOfServicesNames == null || ListOfServicesNames.Count < 0)
+            {
+                return NotFound();
+            }
+            return Ok(ListOfServicesNames);
+        }
+
+
 
         [HttpPost]
         public IActionResult AddNewService(serviceD service)

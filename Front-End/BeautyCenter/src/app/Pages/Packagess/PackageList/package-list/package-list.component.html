@@ -1,0 +1,24 @@
+<a class="btn btn-info" [routerLink]="['/Package/add']">Add</a>
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Operations</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for(item of packges;track $index){
+            <tr>
+                <td>{{item.id}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.price}}</td>
+                <td>
+                    <a class="btn btn-danger"[routerLink]="['/Package/delete',item.id]">Delete</a>
+                    <a class="btn btn-info"[routerLink]="['/Package/edit',item.id]">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
