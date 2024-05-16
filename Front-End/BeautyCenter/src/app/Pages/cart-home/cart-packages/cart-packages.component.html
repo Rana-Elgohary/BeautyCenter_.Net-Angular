@@ -1,1 +1,18 @@
-<p>cart-packages works!</p>
+<!-- Include Font Awesome library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<div class="container mx-auto">
+    <h1 class="text-2xl font-bold mb-4">Your Packages </h1>
+    <div>
+    @for(item of packageUser; track $index){
+        <div class="card">
+            <div class="flex items-center mb-">
+                <h3 class="mr-6">{{ item.packageName }}</h3>
+                <h3 class="mr-6">{{ item.packagInfo?.price }}</h3>
+                <button class="btn" (click)="deleteById(item.packageId,item.userId)"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+    }
+</div>
+</div>
+

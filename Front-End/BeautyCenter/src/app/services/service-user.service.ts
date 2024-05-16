@@ -21,4 +21,13 @@ export class ServiceUserService {
     const url = `${this.baseUrlForGetByUserID}/${id}`;
     return this.http.get<ServiceUser[]>(url);
   }
+
+  deleteById(userId: number, serviceId: number){
+    console.log(`${this.baseUrl}/${userId}/${serviceId}`);
+    return this.http.delete<"any">(`${this.baseUrl}/${userId}/${serviceId}`);
+  }
+
+  deleteAllServiceInThisUser(userId:number){
+    return this.http.delete<"any">(`${this.baseUrl}/${userId}`);
+  }
 }

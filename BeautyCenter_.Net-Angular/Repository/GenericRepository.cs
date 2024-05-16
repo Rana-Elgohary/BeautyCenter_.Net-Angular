@@ -109,10 +109,51 @@ namespace BeautyCenter_.Net_Angular.Repository
             .FirstOrDefault(us => us.ServiceId == ServiceId && us.UserId == userId);
 
         }
+        public List<UserService> getUserServiceByCompositeUserID(int userId)
+        {
+            return db.Set<UserService>()
+            .Include(us => us.Service) // Include the Service navigation property
+            .Include(us => us.User)    // Include the User navigation property
+            .Where(us=>us.UserId == userId).ToList();   
+
+        }
+        public List<PackageUser> getUserPackageByCompositeUserID(int userId)
+        {
+            return db.Set<PackageUser>()
+            .Include(us => us.Package) // Include the Service navigation property
+            .Include(us => us.User)    // Include the User navigation property
+            .Where(us => us.UserId == userId).ToList();
+
+        }
+
         public void deleteByCompositeKeyG(int forignId1, int forignId2)
         {
             type obj = db.Set<type>().Find(forignId1, forignId2);
             db.Set<type>().Remove(obj);
+        }
+        public void deletepackagesUserByuserId(List<PackageUser> packagesUsers)
+        {
+            foreach (var item in packagesUsers)
+            {
+                PackageUser obj = db.Set<PackageUser>().Find(item.UserId, item.PackageId);
+                if (obj != null) // It's a good practice to check if the object is found
+                {
+                    db.Set<PackageUser>().Remove(obj);
+                }
+            }
+
+        }
+        public void deleteServicesUserByuserId(List<UserService> servicessUsers)
+        {
+            foreach (var item in servicessUsers)
+            {
+                UserService obj = db.Set<UserService>().Find(item.UserId, item.ServiceId);
+                if (obj != null) // It's a good practice to check if the object is found
+                {
+                    db.Set<UserService>().Remove(obj);
+                }
+            }
+
         }
         public List<PackageUser> getByUserIdfromPU(int userId)
         {
@@ -251,7 +292,6 @@ namespace BeautyCenter_.Net_Angular.Repository
         {
             db.SaveChanges();
         }
-
 
        
     }

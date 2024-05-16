@@ -242,6 +242,25 @@ namespace BeautyCenter_.Net_Angular.Controllers
                 return Ok("Deleted Successfully");
             }       
         }
+        //--------------------------------------------------------------
+        //Delete by UserID:
+
+        [HttpDelete("{userId:int}")]
+        [Authorize]
+        public ActionResult deleteAllPckageUserByUserId(int userId)
+        {
+            List<PackageUser> packageUser = unit.PackageUserRepository.getUserPackageByCompositeUserID(userId);
+            if (packageUser == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                unit.PackageUserRepository.deletepackagesUserByuserId(packageUser);
+                unit.PackageUserRepository.save();
+                return Ok("Deleted Successfully");
+            }
+        }
         //-----------------------------------------------------------
 
         //Delete PackageUser by Date:
@@ -260,6 +279,11 @@ namespace BeautyCenter_.Net_Angular.Controllers
                 return Ok("Done");
             }
         }
+
+        //-----------------------------------------------------------------------------------------------
+        //Delete By UserID
+
+
 
     }
 }
