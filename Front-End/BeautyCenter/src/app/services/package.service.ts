@@ -8,7 +8,7 @@ import { Package } from '../_model/package';
 export class PackageService {
 
   constructor(public http:HttpClient) { }
-  Url="http://localhost:5240/api/Package/"
+  Url="https://localhost:7206/api/Package/"
 
   GetAllPackage(){  //done
     return this.http.get<Package[]>(this.Url);

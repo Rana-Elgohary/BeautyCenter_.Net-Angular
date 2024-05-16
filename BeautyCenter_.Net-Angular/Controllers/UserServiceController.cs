@@ -1,6 +1,7 @@
 ﻿using BeautyCenter_.Net_Angular.DTO;
 using BeautyCenter_.Net_Angular.Models;
 using BeautyCenter_.Net_Angular.UnitOfWork;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -265,6 +266,26 @@ namespace BeautyCenter_.Net_Angular.Controllers
                 unit.UserServiceRepository.deleteUserServiceByDate(Date);
                 unit.UserServiceRepository.save();
                 return Ok("UserService Deleted succ");
+            }
+        }
+
+        //------------------------------------------------------------------------------
+        //Delete by UserID:
+
+        [HttpDelete("{userId:int}")]
+        [Authorize]
+        public ActionResult deleteAllUserUserByUserId(int userId)
+        {
+            List<UserService> ServiceUser = unit.PackageUserRepository.getUserServiceByCompositeUserID(userId);
+            if (ServiceUser == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                unit.PackageUserRepository.deleteServicesUserByuserId(ServiceUser);
+                unit.PackageUserRepository.save();
+                return Ok("Deleted Successfully");
             }
         }
     }

@@ -2,16 +2,16 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 <div class="container mx-auto">
-    <h1 class="text-2xl font-bold mb-4">Services Cart</h1>
-    <!-- Loop through services -->
+    <h1 class="text-2xl font-bold mb-4">Your Services </h1>
+    <div>
     @for(item of servUserM; track $index){
-    <div class="flex items-center mb-4">
-        <!-- Display service name -->
-        <h3 class="mr-4">{{ item.serviceName }}</h3>
-        <!-- Display service price -->
-        <h4 class="mr-4">{{ item.serviceInfo.price }}</h4>
-        <!-- Trash icon button -->
-        <button class="btn"><i class="fas fa-trash"></i></button>
-    </div>
+        <div class="card">
+            <div class="flex items-center mb-">
+                <h3 class="mr-6">{{ item.serviceName }}</h3>
+                <h4 class="mr-6">{{ item.serviceInfo?.price }}</h4>
+                <button class="btn" (click)="deletePackage( item.userId , item.serviceId)"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
     }
+</div>
 </div>
