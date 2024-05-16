@@ -5,6 +5,7 @@ import { PackageEditComponent } from './Pages/Packagess/PackageEdit/package-edit
 import { PackageAddComponent } from './Pages/Packagess/PackageAdd/package-add/package-add.component';
 import { PackageDeleteComponent } from './Pages/Packagess/PackageDelete/package-delete/package-delete.component';
 import { PackageListComponent } from './Pages/Packagess/PackageList/package-list/package-list.component';
+import { AboutUsComponent } from './Pages/LandingPage/about-us/about-us.component';
 
 export const routes: Routes = [
     { path: 'Cart/:userId', component: CartHomeComponent },
@@ -12,5 +13,8 @@ export const routes: Routes = [
     {path:'Package/delete/:id',component:PackageDeleteComponent,title:'Delete'},
     {path:'Package/add',component:PackageAddComponent,title:'Add'},
     {path:'Package/edit/:id',component:PackageEditComponent,title:'Edit'},
-    {path:'**', component:HomeComponent}
+    {path: 'Home', component: HomeComponent, title:'Home', children:[
+        {path:'About',component:AboutUsComponent,title:'About'},
+    ]},
+    {path: '', redirectTo: 'Home', pathMatch: "full"}
 ];

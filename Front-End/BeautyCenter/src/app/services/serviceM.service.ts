@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
 export class ServiceService {
 
   baseurl="https://localhost:7206/api/Services"
+  baseurl_Rana="http://localhost:5240/api/Services"
+
   constructor(public http:HttpClient) { }
   getall(){
     return this.http.get<Service[]>(this.baseurl);
@@ -18,5 +20,7 @@ export class ServiceService {
     return this.http.get<Service>(url);
   }
   
-  
+  getAllCategories(){
+    return this.http.get<string[]>(`${this.baseurl_Rana}/AllCategories`)
+  }
 }
