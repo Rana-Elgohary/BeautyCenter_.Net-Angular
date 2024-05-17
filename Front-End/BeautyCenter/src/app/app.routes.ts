@@ -6,6 +6,8 @@ import { PackageAddComponent } from './Pages/Packagess/PackageAdd/package-add/pa
 import { PackageDeleteComponent } from './Pages/Packagess/PackageDelete/package-delete/package-delete.component';
 import { PackageListComponent } from './Pages/Packagess/PackageList/package-list/package-list.component';
 import { AboutUsComponent } from './Pages/LandingPage/about-us/about-us.component';
+import { LoginComponent } from './Pages/login/login.component';
+import { RegisterComponent } from './Pages/register/register.component';
 
 export const routes: Routes = [
     { path: 'Cart/:userId', component: CartHomeComponent },
@@ -16,5 +18,7 @@ export const routes: Routes = [
     {path: 'Home', component: HomeComponent, title:'Home', children:[
         {path:'About',component:AboutUsComponent,title:'About'},
     ]},
+    {path: 'login', component:LoginComponent, title:'Login'},
+    {path: 'Register', component:RegisterComponent, title:'Register'},
     {path: '', redirectTo: 'Home', pathMatch: "full"}
 ];
