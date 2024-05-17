@@ -4,6 +4,7 @@
     border-radius: 8px;
     padding: 16px;
     margin-bottom: 16px;
+    margin-top: 30px;
     width: 30%;
   }
   
@@ -19,3 +20,6 @@
     margin-right: 20px;
   }
   
+  .Con{
+    margin-top:5cm ;
+  }

@@ -91,7 +91,7 @@ namespace BeautyCenter_.Net_Angular.Repository
         }
 
        
-        public PackageUser getByCompositeKeyPU(int packageId, int userId)
+        public PackageUser getByCompositeKeyPU(int userId,int packageId)
         {
             return db.Set<PackageUser>()
             .Include(pu => pu.Package) // Include the Package navigation property
@@ -101,7 +101,7 @@ namespace BeautyCenter_.Net_Angular.Repository
         }
 
 
-        public UserService getByCompositeKeyUS(int ServiceId, int userId)
+        public UserService getByCompositeKeyUS( int userId,int ServiceId)
         {
             return db.Set<UserService>()
             .Include(us => us.Service) // Include the Service navigation property
