@@ -1,6 +1,13 @@
-<div class="mb-24">
-    <div class="w-40 m-auto pb-16">
-        <p class="font-serif font-semibold text-3xl mb-3 text-[#646464]">Categories</p>
-        <hr class="text-[#7D9D9C] border-5">
-    </div>
+<div class="border-2 p-4 m-auto flex flex-col items-center">
+    <img class="w-100 h-[350px]" [src]="photo">
+    <h1 class="font-mono text-2xl tracking-wide mt-3 capitalize">
+        {{category}}
+    </h1>
+    <p class="text-[#646464]">
+        {{paragh}}
+    </p>
+    <button (click)="goTo()" class="mt-7 border-3 border-[#dbbf9e] rounded-full w-10 h-10 shadow-lg text-[#dbbf9e] text-2xl flex flex-col items-center
+    duration-200 transition ease-in-out delay-75 hover:-translate-y-1 hover:scale-125 hover:shadow-black">
+        >
+    </button>
 </div>

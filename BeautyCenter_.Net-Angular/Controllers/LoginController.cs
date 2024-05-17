@@ -19,16 +19,16 @@ namespace BeautyCenter_.Net_Angular.Controllers
             this.db = context;
         }
         [HttpGet]
-        public IActionResult login(string username, string pass)
+        public IActionResult login(string Email, string pass)
         {
-            var us =db.Set<Userr>().First(s => s.Name == username && s.Password == pass);
+            var us =db.Set<Userr>().First(s => s.Email == Email && s.Password == pass);
 
             if(us != null)
             {
                 #region claims   
 
                 List<Claim> userdata = new List<Claim>();
-                userdata.Add(new Claim("username", us.Name));
+                userdata.Add(new Claim("Email", us.Email));
                 userdata.Add(new Claim("isAdmin", "false"));
                 userdata.Add(new Claim("isUser", "true"));
 
