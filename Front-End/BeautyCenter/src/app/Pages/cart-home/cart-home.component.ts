@@ -7,6 +7,7 @@ import { CartSevicesComponent } from './cart-sevices/cart-sevices.component';
 import { CartPackagesComponent } from './cart-packages/cart-packages.component';
 import { PriceCountService } from '../../services/price-count.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-cart-home',
@@ -43,11 +44,29 @@ export class CartHomeComponent implements OnInit {
     alert('Your book is confirmed');
     this.router.navigate(['/home']);
   }
-
   DeleteThisPayment(): void {
-    this.UserServService.deleteAllServiceInThisUser(this.userId);
-    this.packageUserService.deleteAllpackagesuserByUserId(this.userId);
-    alert('Your book is deleted');
-    this.router.navigate(['/home']);
+    // Delete services for the user
+    this.UserServService.deleteAllServiceInThisUser(this.userId)
+      .pipe(
+        catchError(error => {
+          console.error('Error deleting services:', error);
+          return of(null); // Return observable of null to continue the deletion process
+        })
+      )
+      .subscribe(() => {
+        // Delete packages for the user
+        this.packageUserService.deleteAllpackagesuserByUserId(this.userId)
+          .pipe(
+            catchError(error => {
+              console.error('Error deleting packages:', error);
+              return of(null); // Return observable of null to continue the process
+            })
+          )
+          .subscribe(() => {
+            // If deletion is successful, show alert and navigate
+            alert('Your book is deleted');
+            this.router.navigate(['/home']);
+          });
+      });
   }
 }

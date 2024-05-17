@@ -273,7 +273,6 @@ namespace BeautyCenter_.Net_Angular.Controllers
         //Delete by UserID:
 
         [HttpDelete("{userId:int}")]
-        [Authorize]
         public ActionResult deleteAllUserUserByUserId(int userId)
         {
             List<UserService> ServiceUser = unit.PackageUserRepository.getUserServiceByCompositeUserID(userId);

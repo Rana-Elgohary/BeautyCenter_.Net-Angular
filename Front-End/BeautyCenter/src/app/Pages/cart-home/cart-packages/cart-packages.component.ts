@@ -6,11 +6,12 @@ import { forkJoin } from 'rxjs';
 import { PackageService } from '../../../services/package.service';
 import { Package } from '../../../_model/package';
 import { PriceCountService } from '../../../services/price-count.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cart-packages',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './cart-packages.component.html',
   styleUrl: './cart-packages.component.css'
 })
@@ -39,9 +40,7 @@ export class CartPackagesComponent implements OnInit{
       forkJoin(requests).subscribe((responses: Package[]) => {
         responses.forEach((response, index) => {
           this.packageUser[index].packagInfo = response;
-          this.priceCounter +=+response.price; // Accumulate price
-          // this.PriceService.priceCounter+=+this.priceCounter;
-          // console.log("price is", this.priceCounter);       
+          this.priceCounter +=+response.price; // Accumulate price    
          });
          this.PriceService.setPriceCounter(this.priceCounter); // Update the total price once
          console.log("price is", this.priceCounter);
@@ -50,8 +49,30 @@ export class CartPackagesComponent implements OnInit{
   });
 }
 
-deleteById(userId:number,packageId:number){
-  this.packageUserSERV.deleteById(userId,packageId)
+
+deleteById(userId: number, PID: number): void {
+  const foundUser = this.packageUser.find(item => item.userId === userId && item.packageId === PID);
+  
+  if (foundUser) {
+    // If foundUser is not undefined, proceed with deleting and reducing price
+    const price: number = foundUser.packagInfo?.price ?? 0;
+    this.PriceService.reducePrice(price);
+    console.log(price);
+
+    this.packageUserSERV.deleteById(userId, PID).subscribe(
+      response => {
+        console.log('Deleted successfully', response);
+        // Remove the item from the array if deletion is successful
+        this.packageUser = this.packageUser.filter(item => !(item.userId === userId && item.packageId === PID));
+        // Update the price counter
+      },
+      error => {
+        console.error('Error deleting package', error);
+      }
+    );
+  } else {
+    console.error('ServiceUser not found for the specified userId and serviceId');
+  }
 }
 }
 

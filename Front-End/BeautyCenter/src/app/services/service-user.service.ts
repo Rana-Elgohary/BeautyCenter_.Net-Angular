@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { ServiceUser } from '../_model/service-user';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,23 +12,33 @@ export class ServiceUserService {
   baseUrl="https://localhost:7206/api/UserService";
   baseUrlForGetByUserID="https://localhost:7206/api/UserService/by-user";
 
-  constructor(public http:HttpClient) { }
+  constructor(public http: HttpClient) { }
 
-  getall(){
-   return this.http.get<ServiceUser[]>(this.baseUrl);
+  getall(): Observable<ServiceUser[]> {
+    return this.http.get<ServiceUser[]>(this.baseUrl);
   }
 
-  getByUserId(id: number) {
+  getByUserId(id: number): Observable<ServiceUser[]> {
     const url = `${this.baseUrlForGetByUserID}/${id}`;
     return this.http.get<ServiceUser[]>(url);
   }
 
-  deleteById(userId: number, serviceId: number){
-    console.log(`${this.baseUrl}/${userId}/${serviceId}`);
-    return this.http.delete<"any">(`${this.baseUrl}/${userId}/${serviceId}`);
+  deleteById(userId: number, serviceId: number): Observable<any> {
+    const url = `${this.baseUrl}/${userId}/${serviceId}`;
+    console.log(`Deleting: ${url}`);
+    return this.http.delete(url, { responseType: 'text' }).pipe(
+      catchError(this.handleError)
+    );
+  }  
+
+  deleteAllServiceInThisUser(userId: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${userId}`, { responseType: 'text' }).pipe(
+      catchError(this.handleError)
+    );
   }
 
-  deleteAllServiceInThisUser(userId:number){
-    return this.http.delete<"any">(`${this.baseUrl}/${userId}`);
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    console.error('An error occurred:', error);
+    return throwError('Something went wrong; please try again later.');
   }
 }

@@ -1,6 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PackageUser } from '../_model/package-user';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +20,21 @@ export class PackageUserService {
     return this.http.get<PackageUser[]>(url);
   }
   deleteById(userId: number, packageId: number){
-    console.log(`${this.baseurl}${userId}/${packageId}`);
-    return this.http.delete<"any">(`${this.baseurl}${userId}/${packageId}`);
+    const url = `${this.baseurl}${userId}/${packageId}`;
+    return this.http.delete(url, { responseType: 'text' }).pipe(
+      catchError(this.handleError)
+    );
+  }  
+  
+
+  deleteAllpackagesuserByUserId(userId: number): Observable<any> {
+    const url = `${this.baseurl}${userId}`;
+    return this.http.delete(url, { responseType: 'text' }).pipe(
+      catchError(this.handleError)
+    );
   }
-  deleteAllpackagesuserByUserId(userId: number){
-    console.log(`${this.baseurl}${userId}`);
-    return this.http.delete<"any">(`${this.baseurl}${userId}`);
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    console.error('An error occurred:', error);
+    return throwError('Something went wrong; please try again later.');
   }
 }
