@@ -15,7 +15,12 @@ export class CategoriesComponent {
   @Input() link:string = ''
   
   goTo() {
+    if(this.link=="Package")
     this.router.navigateByUrl(`/${this.link}`)
+  else{
+    this.router.navigateByUrl(`/Service/${this.link}`)
+
+  }
   }
   
   constructor(public router:Router){}

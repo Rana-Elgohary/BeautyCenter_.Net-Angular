@@ -8,6 +8,7 @@ import { PackageListComponent } from './Pages/Packagess/PackageList/package-list
 import { AboutUsComponent } from './Pages/LandingPage/about-us/about-us.component';
 import { LoginComponent } from './Pages/login/login.component';
 import { RegisterComponent } from './Pages/register/register.component';
+import { ServicesListComponent } from './Pages/Services/services-list/services-list.component';
 
 export const routes: Routes = [
     { path: 'Cart/:userId', component: CartHomeComponent },
@@ -20,5 +21,6 @@ export const routes: Routes = [
     ]},
     {path: 'login', component:LoginComponent, title:'Login'},
     {path: 'Register', component:RegisterComponent, title:'Register'},
+    {path: 'Service/:category',component:ServicesListComponent,title:"Services"},
     {path: '', redirectTo: 'Home', pathMatch: "full"}
 ];
