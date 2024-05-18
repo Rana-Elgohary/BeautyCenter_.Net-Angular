@@ -7,8 +7,22 @@
     <h1 class="text-2xl font-bold">{{ totalPrice }}</h1>
   </div>
   <div class="flex items-center justify-center mb-4 space-x-2">
-    <button class="btn btn-confirm bg-green-500 text-white hover:bg-green-600"  (click)="confirm()">Confirm</button>
-    <button class="btn btn-cancel bg-red-500 text-white hover:bg-red-600"  (click)="DeleteThisPayment()">Cancel</button>
+    <button 
+    class="btn btn-confirm text-white" 
+    style="background-color: #7D9D9C; color: white;" 
+    (click)="confirm()"
+    onmouseover="this.style.backgroundColor='#6B8C8B'"
+    onmouseout="this.style.backgroundColor='#7D9D9C'">
+    Confirm
+</button>
+<button 
+    class="btn btn-cancel text-white" 
+    style="background-color: #7D7D7D; color: white;" 
+    (click)="DeleteThisPayment()"
+    onmouseover="this.style.backgroundColor='#696969'"
+    onmouseout="this.style.backgroundColor='#7D7D7D'">
+    Cancel
+</button>
   </div>
   
 </div>
