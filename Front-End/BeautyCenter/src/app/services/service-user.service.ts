@@ -9,8 +9,8 @@ import { ServiceUser } from '../_model/service-user';
 })
 export class ServiceUserService {
 
-  baseUrl="https://localhost:7206/api/UserService";
-  baseUrlForGetByUserID="https://localhost:7206/api/UserService/by-user";
+  baseUrl="http://localhost:5240/api/UserService";
+  baseUrlForGetByUserID="http://localhost:5240/api/UserService/by-user";
 
   constructor(public http: HttpClient) { }
 

@@ -28,10 +28,8 @@ namespace BeautyCenter_.Net_Angular.Controllers
                 #region claims   
 
                 List<Claim> userdata = new List<Claim>();
-                userdata.Add(new Claim("Email", us.Email));
-                userdata.Add(new Claim("isAdmin", "false"));
-                userdata.Add(new Claim("isUser", "true"));
-
+                userdata.Add(new Claim("name", us.Name));
+                userdata.Add(new Claim("id", us.Id.ToString()));
 
                 #endregion
                 #region secret key

@@ -9,7 +9,7 @@
         <div class="card">
             <div class="flex items-center mb-">
                 <h3 class="mr-6">{{ item.packageName }}</h3>
-                <h3 class="mr-6">{{ item.packagInfo?.price }}</h3>
+                <h3 class="mr-6">{{ item.packagInfo.price }}</h3>
                 <button class="btn" (click)="deleteById(item.userId,item.packageId)"><i class="fas fa-trash"></i></button>
             </div>
         </div>

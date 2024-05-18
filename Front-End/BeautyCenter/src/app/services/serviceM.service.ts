@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class ServiceService {
 
-  baseurl="https://localhost:7206/api/Services"
+  baseurl="http://localhost:5240/api/Services"
   baseurl_Rana="http://localhost:5240/api/Services"
 
   constructor(public http:HttpClient) { }
