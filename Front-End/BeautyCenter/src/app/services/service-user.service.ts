@@ -3,14 +3,17 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ServiceUser } from '../_model/service-user';
+import { UserService2 } from '../_model/user-service2';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceUserService {
 
+  // baseUrl="http://localhost:5240/api/UserService";
   baseUrl="https://localhost:7206/api/UserService";
-  baseUrlForGetByUserID="https://localhost:7206/api/UserService/by-user";
+
+  baseUrlForGetByUserID="http://localhost:5240/api/UserService/by-user";
 
   constructor(public http: HttpClient) { }
 
@@ -40,5 +43,9 @@ export class ServiceUserService {
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.error('An error occurred:', error);
     return throwError('Something went wrong; please try again later.');
+  }
+
+  addServiceUser(userService:UserService2){
+    return this.http.post<ServiceUser>(this.baseUrl,userService)
   }
 }

@@ -11,7 +11,11 @@ import { UserService2 } from '../_model/user-service2';
 })
 export class ServiceService {
 
+
   baseurl="https://localhost:7206/api/Services/"
+
+  // baseurl="http://localhost:5240/api/Services"
+
   baseurl_Rana="http://localhost:5240/api/Services"
 
   constructor(public http:HttpClient) { }
@@ -30,7 +34,4 @@ export class ServiceService {
   getByCategory(category:string){
     return this.http.get<Service[]>(`${this.baseurl}ServicesByCategory/${category}`)
   }
-addServiceUser(userService:UserService2){
-  return this.http.post<ServiceUser>(this.baseurl,userService)
-}
 }

@@ -87,7 +87,7 @@ namespace BeautyCenter_.Net_Angular.Controllers
 
 
 
-        [HttpGet("ServiceByName,{name:alpha}")]
+        [HttpGet("ServiceByName/{name:alpha}")]
         public IActionResult GetServiceByName(string name)
         {
             if (name == null)
@@ -114,7 +114,7 @@ namespace BeautyCenter_.Net_Angular.Controllers
 
 
 
-        [HttpGet("ServicesByCategory,{categ:alpha}")]
+        [HttpGet("ServicesByCategory/{categ:alpha}")]
         public IActionResult GetServiceByCategory(string categ)
         {
             if (categ == null)

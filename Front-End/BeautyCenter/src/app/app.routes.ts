@@ -8,10 +8,14 @@ import { PackageListComponent } from './Pages/Packagess/PackageList/package-list
 import { AboutUsComponent } from './Pages/LandingPage/about-us/about-us.component';
 import { LoginComponent } from './Pages/login/login.component';
 import { RegisterComponent } from './Pages/register/register.component';
+
 import { ServicesListComponent } from './Pages/Services/services-list/services-list.component';
 
+import { logginGuardGuard } from './Guard/loggin-guard.guard';
+
+
 export const routes: Routes = [
-    { path: 'Cart/:userId', component: CartHomeComponent },
+    { path: 'Cart/:userId', component: CartHomeComponent, canActivate:[logginGuardGuard] },
     { path: 'Package', component:PackageListComponent,title:"Packages" },
     {path:'Package/delete/:id',component:PackageDeleteComponent,title:'Delete'},
     {path:'Package/add',component:PackageAddComponent,title:'Add'},

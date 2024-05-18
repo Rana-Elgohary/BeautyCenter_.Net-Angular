@@ -25,16 +25,16 @@ namespace BeautyCenter_.Net_Angular.Controllers
 
             if (service == null)
             {
-                return BadRequest();
+                return BadRequest("error from  1");
             }
 
             if (user == null)
             {
-                return BadRequest();
+                return BadRequest("error from  2");
             }
             if (newUserService == null)
             {
-                return BadRequest();
+                return BadRequest("error from  3");
             }
 
             else
